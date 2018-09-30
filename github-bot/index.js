@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const GitHub = require('github-api');
 const winston = require('winston');
-const keywordChecker = require('./keyword_checker');
-const messageBuilder = require('./messageBuilder');
+const keywordChecker = require('./keyword-checker');
+const messageBuilder = require('./message-builder');
 const utils = require('./utils');
 
 const app = express();

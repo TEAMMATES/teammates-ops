@@ -1,4 +1,4 @@
-const index = require('../index.js');
+const index = require('../index');
 
 describe('index', () => {
   describe('getViolations', () => {
@@ -46,6 +46,7 @@ describe('index', () => {
       const expectedViolations = { body: { main: true } };
       expect(violations).toEqual(expectedViolations);
     });
+
     it('should return all violations when PR title and description do not match regex', () => {
       process.env.REGEX_PULL_REQ_BODY = '#';
       process.env.REGEX_PULL_REQ_TITLE = '#';
