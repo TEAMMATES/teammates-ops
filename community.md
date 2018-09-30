@@ -18,7 +18,7 @@ Contributors are community members who give small but noteworthy contributions (
 TEAMMATES welcome any developer (especially student) to be a contributor to the project, with no expectation of commitment or skill set.
 
 Contributors:
-* Have "pull" access to the main repository and submit their fixes via pull requests (PRs) from their own forked repository.
+* Have "pull" access to the main repository and the ops repository, and submit their fixes via pull requests (PRs) from their own forked repository.
   The detailed workflow is given in [this document](https://github.com/TEAMMATES/teammates/blob/master/docs/process.md).
 * Can open issues.
 * Can close issues and PRs opened by themselves.
@@ -77,6 +77,7 @@ Area leads have the following duties:
 * Perform maintenance tasks regularly in their portfolio area. For example:
   * For feature-related areas: fixing bugs, testing for correctness and performance, paying off code-related technical debts.
   * For DevOps: researching new development tools or alternative workflow to be adopted, updating third-party dependencies.
+    * In addition, the area lead for DevOps will have a "push" access to the ops repository.
   * For documentation: making sure they are updated and relevant.
 
 ### Project Lead
@@ -86,7 +87,7 @@ Area leads have the following duties:
 Project leads are team members who oversee the entire project velocity and ensure its continuity and maintainability.
 
 Project leads have the following additional privileges:
-* Have "admin" access to the main repository.
+* Have "admin" access to the main repository and the ops repository.
 * Can assign reviewers to any PR.
 * Can merge any approved PR.
 
