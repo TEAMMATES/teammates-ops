@@ -23,4 +23,4 @@ Here are the tools used for TEAMMATES development/operations:
 
 ## Sub-projects
 
-This section is coming soon!
+- [Release script](release-script): automates many tasks related to releasing a new version

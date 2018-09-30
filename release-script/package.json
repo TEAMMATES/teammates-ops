@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "moment": "2.22.2",
+    "readline-sync": "1.4.9",
+    "request": "2.88.0",
+    "shelljs": "0.8.2"
+  },
+  "devDependencies": {
+    "eslint": "5.6.1",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-plugin-import": "2.14.0"
+  }
+}
