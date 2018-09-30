@@ -1,10 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const GitHub = require('github-api');
+const winston = require('winston');
 const keywordChecker = require('./keyword_checker');
 const messageBuilder = require('./messageBuilder');
 const utils = require('./utils');
-const winston = require('winston');
 
 const app = express();
 // basic auth
@@ -22,8 +22,7 @@ function isPullRequest(receivedJson) {
 
 function extractRelevantDetails(receivedJson) {
   const { pull_request: pullRequest, action } = receivedJson.body;
-  const title = pullRequest.title;
-  const body = pullRequest.body;
+  const { title, body } = pullRequest;
   const repo = pullRequest.base.repo.full_name;
   const username = pullRequest.user.login;
   const id = pullRequest.number;
@@ -39,8 +38,8 @@ function extractRelevantDetails(receivedJson) {
 }
 
 function isPullRequestToCheck(prDetails) {
-  return prDetails.action === 'opened' || prDetails.action === 'edited' ||
-    prDetails.action === 'reopened' || prDetails.action === 'review_requested';
+  return prDetails.action === 'opened' || prDetails.action === 'edited'
+      || prDetails.action === 'reopened' || prDetails.action === 'review_requested';
 }
 
 function isValidPullRequestTitle(prTitle) {
@@ -68,15 +67,15 @@ function getViolations(prDetails) {
   const violations = {};
   if (!isValidPullRequestTitle(prDetails.title)) {
     violations.title = { main: true };
-    if (process.env.ENABLE_KEYWORD_CHECKER !== undefined &&
-      process.env.ENABLE_KEYWORD_CHECKER.toLowerCase() === 'true') {
+    if (process.env.ENABLE_KEYWORD_CHECKER !== undefined
+        && process.env.ENABLE_KEYWORD_CHECKER.toLowerCase() === 'true') {
       violations.title.details = keywordChecker.getDetailedTitleViolations(prDetails.title);
     }
   }
   if (!isValidPullRequestBody(prDetails.body)) {
     violations.body = { main: true };
-    if (process.env.ENABLE_KEYWORD_CHECKER !== undefined &&
-      process.env.ENABLE_KEYWORD_CHECKER.toLowerCase() === 'true') {
+    if (process.env.ENABLE_KEYWORD_CHECKER !== undefined
+        && process.env.ENABLE_KEYWORD_CHECKER.toLowerCase() === 'true') {
       violations.body.details = keywordChecker.getDetailedBodyViolations(prDetails.body);
     }
   }
@@ -86,13 +85,16 @@ function getViolations(prDetails) {
 function receivePullRequest(request, response) {
   winston.info(`Received pull request: \n${request.body}`);
   response.send();
-  if (!isPullRequest(request)) return;
+  if (!isPullRequest(request)) {
+    return;
+  }
   const extractedPrDetails = extractRelevantDetails(request);
   if (isPullRequestToCheck(extractedPrDetails) && !isValidPullRequest(extractedPrDetails)) {
     winston.info('Check Failed!');
     const responseMessage = messageBuilder.getFeedbackMessage(
       extractedPrDetails.username,
-      getViolations(extractedPrDetails));
+      getViolations(extractedPrDetails),
+    );
     commentOnPullRequest(extractedPrDetails.repo, extractedPrDetails.id, responseMessage);
     winston.info(`Message to user: \n"${responseMessage}"`);
   }

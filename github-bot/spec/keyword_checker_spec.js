@@ -22,7 +22,7 @@ describe('keyword_checker', () => {
 
   it('should feedback when body string is missing issue reference', () => {
     const violations = keyword_checker.getDetailedBodyViolations('Fixed something');
-    const expectedViolations = { noIssueReference: true };
+    const expectedViolations = { noIssueReference: true, missingGithubKeyword: true };
     expect(violations).toEqual(expectedViolations);
   });
 
