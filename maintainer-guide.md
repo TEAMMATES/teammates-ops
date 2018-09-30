@@ -251,14 +251,11 @@ When someone's tenure as committer or team member has passed:
 
 Ensure that there is a healthy supply of `d.FirstTimers`-labelled issues and `d.Contributors`-labelled issues to last for at least **7 days** considering the activity level at that point of time.
 
-Possible `d.FirstTimers` issues:
+Possible source for such issues:
 
 * Documentation-only changes
 * Fixing typo
 * Removing unused methods or classes
-
-Possible `d.Contributors` issues:
-
 * Minor refactoring
 * Adding missing tests
 * Adding minor new feature or enhancement
