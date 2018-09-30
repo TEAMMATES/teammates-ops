@@ -8,11 +8,6 @@ const messages = {
   missingGithubKeyword: 'Should contain GitHub keyword to auto-close issue it fixes: Refer [here](https://help.github.com/articles/closing-issues-via-commit-messages/#keywords-for-closing-issues) for a list of accepted keywords.',
 };
 
-function isKeywordCheckerEnabled() {
-  return process.env.ENABLE_KEYWORD_CHECKER !== undefined
-      && process.env.ENABLE_KEYWORD_CHECKER.toLowerCase() === 'true';
-}
-
 /**
  * Formats message as a GFMD level two unordered list item
  */
@@ -38,11 +33,9 @@ function buildTitleFeedback(violations) {
   let message = '';
   if (violations.main === true) {
     message += getFormattedMessageLevelOneOrdered(messages.prTitle);
-    if (isKeywordCheckerEnabled()) {
-      Object.keys(violations.details).forEach((key) => {
-        message += getFormattedMessageLevelTwoUnordered(messages[key]);
-      });
-    }
+    Object.keys(violations.details).forEach((key) => {
+      message += getFormattedMessageLevelTwoUnordered(messages[key]);
+    });
   }
   return message;
 }
@@ -58,11 +51,9 @@ function buildDescriptionFeedback(violations) {
   let message = '';
   if (violations.main === true) {
     message += getFormattedMessageLevelOneOrdered(messages.prBody);
-    if (isKeywordCheckerEnabled()) {
-      Object.keys(violations.details).forEach((key) => {
-        message += getFormattedMessageLevelTwoUnordered(messages[key]);
-      });
-    }
+    Object.keys(violations.details).forEach((key) => {
+      message += getFormattedMessageLevelTwoUnordered(messages[key]);
+    });
   }
   return message;
 }

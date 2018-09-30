@@ -3,16 +3,14 @@ const index = require('../index');
 describe('index', () => {
   describe('getViolations', () => {
     beforeEach(() => {
-      process.env.REGEX_PULL_REQ_TITLE = '\\S\\s';
-      process.env.REGEX_PULL_REQ_BODY = '\\S\\s';
-      process.env.ENABLE_KEYWORD_CHECKER = 'false';
+      process.env.REGEX_PULL_REQ_TITLE = '.*';
+      process.env.REGEX_PULL_REQ_BODY = '.*';
       process.env.CONTRIBUTING_GUIDELINES = 'test';
     });
 
     it('should return empty violations object when regex passes', () => {
-      process.env.REGEX_PULL_REQ_TITLE = '\\S\\s';
-      process.env.REGEX_PULL_REQ_BODY = '\\S\\s';
-      process.env.ENABLE_KEYWORD_CHECKER = 'false';
+      process.env.REGEX_PULL_REQ_TITLE = '.*';
+      process.env.REGEX_PULL_REQ_BODY = '.*';
       const pullRequest = {
         username: 'JohnDoe',
         title: 'A title',
@@ -31,7 +29,14 @@ describe('index', () => {
         body: 'A body',
       };
       const violations = index.getViolations(pullRequest);
-      const expectedViolations = { title: { main: true } };
+      const expectedViolations = {
+        title: {
+          main: true,
+          details: {
+            noIssueReference: true,
+          },
+        },
+      };
       expect(violations).toEqual(expectedViolations);
     });
 
@@ -43,7 +48,15 @@ describe('index', () => {
         body: 'A body',
       };
       const violations = index.getViolations(pullRequest);
-      const expectedViolations = { body: { main: true } };
+      const expectedViolations = {
+        body: {
+          main: true,
+          details: {
+            noIssueReference: true,
+            missingGithubKeyword: true,
+          },
+        },
+      };
       expect(violations).toEqual(expectedViolations);
     });
 
@@ -56,7 +69,21 @@ describe('index', () => {
         body: 'A body',
       };
       const violations = index.getViolations(pullRequest);
-      const expectedViolations = { title: { main: true }, body: { main: true } };
+      const expectedViolations = {
+        title: {
+          main: true,
+          details: {
+            noIssueReference: true,
+          },
+        },
+        body: {
+          main: true,
+          details: {
+            noIssueReference: true,
+            missingGithubKeyword: true,
+          },
+        },
+      };
       expect(violations).toEqual(expectedViolations);
     });
   });

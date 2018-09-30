@@ -63,17 +63,11 @@ function getViolations(prDetails) {
   const violations = {};
   if (!isValidPullRequestTitle(prDetails.title)) {
     violations.title = { main: true };
-    if (process.env.ENABLE_KEYWORD_CHECKER !== undefined
-        && process.env.ENABLE_KEYWORD_CHECKER.toLowerCase() === 'true') {
-      violations.title.details = keywordChecker.getDetailedTitleViolations(prDetails.title);
-    }
+    violations.title.details = keywordChecker.getDetailedTitleViolations(prDetails.title);
   }
   if (!isValidPullRequestBody(prDetails.body)) {
     violations.body = { main: true };
-    if (process.env.ENABLE_KEYWORD_CHECKER !== undefined
-        && process.env.ENABLE_KEYWORD_CHECKER.toLowerCase() === 'true') {
-      violations.body.details = keywordChecker.getDetailedBodyViolations(prDetails.body);
-    }
+    violations.body.details = keywordChecker.getDetailedBodyViolations(prDetails.body);
   }
   return violations;
 }
