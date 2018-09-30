@@ -1,0 +1,7 @@
+{
+  "name": "oss-bot-js",
+  "description": "Bot for managing first pass PR reviews on OSS GitHub repos",
+  "repository": "https://github.com/samsontmr/oss-bot-js",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "image": "heroku/nodejs"
+}

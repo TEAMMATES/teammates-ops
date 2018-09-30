@@ -24,3 +24,4 @@ Here are the tools used for TEAMMATES development/operations:
 ## Sub-projects
 
 - [Release script](release-script): automates many tasks related to releasing a new version
+- [GitHub Bot](github-bot): automates some GitHub interactions
