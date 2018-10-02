@@ -102,7 +102,7 @@ For example, to revert the PR `#3944` (`Remove unnecessary System.out.printlns f
 New releases are made every set period of time (typically every week), in which new set of features and bug fixes are deployed for the users.
 
 * Before release day:
-  * Create an issue for the release to announce the scheduled release time.
+  * [Create an issue for the release](https://github.com/TEAMMATES/teammates/issues/new?template=release.md) to announce the scheduled release time.
   * Update the "about page" with the names of new contributors, if any.
 * Release day:
   * Ensure all PRs included in the release are tagged with the correct milestone, correct assignee(s), and appropriate `c.*` label.
