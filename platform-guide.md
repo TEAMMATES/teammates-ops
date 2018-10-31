@@ -3,6 +3,7 @@
 This document details the operations where Google Cloud Platform is involved.
 
 * [Deploying to a staging server](#deploying-to-a-staging-server)
+* [Running client scripts](#running-client-scripts)
 * [Setting up Gmail API credentials](#setting-up-gmail-api-credentials)
 
 The instructions in all parts of this document work for Linux, OS X, and Windows, with the following pointers:
@@ -56,6 +57,16 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
    * Tick the checkbox next to the deployed version and select `Migrate Traffic`. Wait for a few minutes.
    * If you do not wish to set the deployed version as the default, you can access the deployed app using
      `https://{version}-dot-teammates-john.appspot.com`, e.g `https://6-0-0-dot-teammates-john.appspot.com`.
+
+## Running client scripts
+
+In order to run client scripts against a production environment, you need to authorize your account for [Application Default Credentials](https://developers.google.com/identity/protocols/application-default-credentials).
+
+```sh
+gcloud auth application-default login
+```
+
+Follow the steps until you see `Credentials saved to file: [...].` printed on the console.
 
 ## Setting up Gmail API Credentials
 
