@@ -3,6 +3,7 @@
 This document details the operations where Google Cloud Platform is involved.
 
 * [Deploying to a staging server](#deploying-to-a-staging-server)
+* [Setting up Google Cloud Storage](#setting-up-google-cloud-storage)
 * [Running client scripts](#running-client-scripts)
 * [Setting up Gmail API credentials](#setting-up-gmail-api-credentials)
 
@@ -57,6 +58,12 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
    * Tick the checkbox next to the deployed version and select `Migrate Traffic`. Wait for a few minutes.
    * If you do not wish to set the deployed version as the default, you can access the deployed app using
      `https://{version}-dot-teammates-john.appspot.com`, e.g `https://6-0-0-dot-teammates-john.appspot.com`.
+
+## Setting up Google Cloud Storage
+
+Some features that require blob/binary data storage (as opposed to structured data storage), such as profile pictures, use Google Cloud Storage.
+
+Refer to [this guide](https://cloud.google.com/appengine/docs/standard/java/googlecloudstorageclient/setting-up-cloud-storage#activating_a_cloud_storage_bucket) in order to activate a bucket for your staging server.
 
 ## Running client scripts
 
