@@ -6,6 +6,7 @@ This document details the operations where Google Cloud Platform is involved.
 * [Setting up Google Cloud Storage](#setting-up-google-cloud-storage)
 * [Running client scripts](#running-client-scripts)
 * [Setting up Gmail API credentials](#setting-up-gmail-api-credentials)
+* [Datastore backup and recovery](#datastore-backup-and-recovery)
 
 The instructions in all parts of this document work for Linux, OS X, and Windows, with the following pointers:
 - Replace `./gradlew` to `gradlew.bat` if you are using Windows.
@@ -88,3 +89,43 @@ You may need Gmail API credentials e.g. for testing against production server.
 1. Click `Create credentials` and then select `OAuth client ID`.
 1. Choose `Other`, give it a name, e.g. `teammates` and click `Create`. You will then get shown your client ID details, click `OK`.
 1. Click the `Download JSON` icon.
+
+## Datastore backup and recovery
+
+Google Cloud Datastore provides [managed export/import](https://cloud.google.com/datastore/docs/export-import-entities) as a means of backup and recovery.
+
+### Backup
+
+The backup has been configured to run weekly in the system by setting `app.enable.datastore.backup=true` in `src/main/resources/build.properties`.
+However, a few prerequisites as described [here](https://cloud.google.com/datastore/docs/schedule-export#before_you_begin) need to be done first.
+
+If you wish to do backup outside the scheduled period, you can simply trigger the backup cron job manually from the GCP console.
+
+### Recovery
+
+In order to import a snapshot into the Datastore:
+
+1. Ensure that all the prerequisites described [here](https://cloud.google.com/datastore/docs/export-import-entities#before_you_begin) are done.
+1. Authenticate and set your project ID (e.g. if your project ID is `teammates-john`):
+
+   ```sh
+   gcloud auth login
+   gcloud config set project teammates-john
+   ```
+
+1. Locate the backup snapshot which you want to use.
+   1. Go to your Cloud Storage backup folder: `https://console.cloud.google.com/storage/browser/teammates-john-backup/datastore-backups/?project=teammates-john`.
+      * The above URL is constructed based on the preset values in `build.template.properties`. In your usage, replace the appropriate values accordingly.
+   1. Note down the backup folder name (this is in the form of timestamp) which you want to use. The snapshot URL will be in the form of `gs://teammates-john-backup/datastore-backups/{folder}/{folder}.overall_export_metadata`.
+
+1. Run the following command to import the snapshot:
+
+   ```sh
+   gcloud datastore import {snapshotUrl}
+   ```
+
+   e.g.:
+
+   ```sh
+   gcloud datastore import gs://teammates-john-backup/datastore-backups/2018-11-28T18:43:38.595Z/2018-11-28T18:43:38.595Z.overall_export_metadata
+   ```
