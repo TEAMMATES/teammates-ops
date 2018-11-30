@@ -3,8 +3,9 @@ const messageBuilder = require('../message-builder');
 const username = 'tester';
 
 describe('messageBuilder', () => {
+  const contribGuidelines = 'test';
+
   beforeEach(() => {
-    process.env.CONTRIBUTING_GUIDELINES = 'test';
     process.env.ENABLE_KEYWORD_CHECKER = 'true';
   });
 
@@ -26,8 +27,8 @@ describe('messageBuilder', () => {
         },
       },
     };
-    const feedback = messageBuilder.getFeedbackMessage(username, violations);
-    const expectedMessage = `Hi @${username}, these parts of your pull request do not appear to follow our [contributing guidelines](${process.env.CONTRIBUTING_GUIDELINES}):\n\n${messageBuilder.getFormattedMessageLevelOneOrdered(messageBuilder.messages.prTitle)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.spaceBetweenHashtagAndDigit)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.noIssueReference)}${messageBuilder.getFormattedMessageLevelOneOrdered(messageBuilder.messages.prBody)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.spaceBetweenHashtagAndDigit)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.noIssueReference)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.missingGithubKeyword)}`;
+    const feedback = messageBuilder.getFeedbackMessage(username, violations, contribGuidelines);
+    const expectedMessage = `Hi @${username}, these parts of your pull request do not appear to follow our [contributing guidelines](${contribGuidelines}):\n\n${messageBuilder.getFormattedMessageLevelOneOrdered(messageBuilder.messages.prTitle)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.spaceBetweenHashtagAndDigit)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.noIssueReference)}${messageBuilder.getFormattedMessageLevelOneOrdered(messageBuilder.messages.prBody)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.spaceBetweenHashtagAndDigit)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.noIssueReference)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.missingGithubKeyword)}`;
     expect(feedback).toEqual(expectedMessage);
   });
 
@@ -60,8 +61,8 @@ describe('messageBuilder', () => {
         },
       },
     };
-    const feedback = messageBuilder.getFeedbackMessage(username, violations);
-    const expectedMessage = `Hi @${username}, these parts of your pull request do not appear to follow our [contributing guidelines](${process.env.CONTRIBUTING_GUIDELINES}):\n\n${messageBuilder.getFormattedMessageLevelOneOrdered(messageBuilder.messages.prTitle)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.spaceBetweenHashtagAndDigit)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.noIssueReference)}`;
+    const feedback = messageBuilder.getFeedbackMessage(username, violations, contribGuidelines);
+    const expectedMessage = `Hi @${username}, these parts of your pull request do not appear to follow our [contributing guidelines](${contribGuidelines}):\n\n${messageBuilder.getFormattedMessageLevelOneOrdered(messageBuilder.messages.prTitle)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.spaceBetweenHashtagAndDigit)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.noIssueReference)}`;
     expect(feedback).toEqual(expectedMessage);
   });
 
@@ -76,8 +77,8 @@ describe('messageBuilder', () => {
         },
       },
     };
-    const feedback = messageBuilder.getFeedbackMessage(username, violations);
-    const expectedMessage = `Hi @${username}, these parts of your pull request do not appear to follow our [contributing guidelines](${process.env.CONTRIBUTING_GUIDELINES}):\n\n${messageBuilder.getFormattedMessageLevelOneOrdered(messageBuilder.messages.prBody)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.spaceBetweenHashtagAndDigit)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.noIssueReference)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.missingGithubKeyword)}`;
+    const feedback = messageBuilder.getFeedbackMessage(username, violations, contribGuidelines);
+    const expectedMessage = `Hi @${username}, these parts of your pull request do not appear to follow our [contributing guidelines](${contribGuidelines}):\n\n${messageBuilder.getFormattedMessageLevelOneOrdered(messageBuilder.messages.prBody)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.spaceBetweenHashtagAndDigit)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.noIssueReference)}${messageBuilder.getFormattedMessageLevelTwoUnordered(messageBuilder.messages.missingGithubKeyword)}`;
     expect(feedback).toEqual(expectedMessage);
   });
 });

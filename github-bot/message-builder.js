@@ -74,8 +74,8 @@ module.exports = {
   /**
    * Returns a string containing the formatted feedback message
    */
-  getFeedbackMessage(username, violations) {
-    const feedback = `Hi @${username}, these parts of your pull request do not appear to follow our [contributing guidelines](${process.env.CONTRIBUTING_GUIDELINES}):\n\n`;
+  getFeedbackMessage(username, violations, contributingGuidelines) {
+    const feedback = `Hi @${username}, these parts of your pull request do not appear to follow our [contributing guidelines](${contributingGuidelines}):\n\n`;
 
     return feedback
         + buildTitleFeedback(violations.title || {})

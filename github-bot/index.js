@@ -88,6 +88,7 @@ function receivePullRequest(request, response) {
     const responseMessage = messageBuilder.getFeedbackMessage(
       extractedPrDetails.username,
       getViolations(extractedPrDetails),
+      process.env.CONTRIBUTING_GUIDELINES,
     );
     commentOnPullRequest(extractedPrDetails.repo, extractedPrDetails.id, responseMessage);
     winston.info(`Message to user: \n"${responseMessage}"`);
