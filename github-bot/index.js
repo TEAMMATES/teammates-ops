@@ -16,7 +16,6 @@ const gh = new GitHub({
 app.use(bodyParser.json());
 
 function isPullRequest(receivedJson) {
-  winston.info(`Pull Request field: {${receivedJson.body.pull_request}}`);
   return !!receivedJson.body.pull_request;
 }
 
@@ -26,7 +25,7 @@ function extractRelevantDetails(receivedJson) {
   const repo = pullRequest.base.repo.full_name;
   const username = pullRequest.user.login;
   const id = pullRequest.number;
-  winston.info(`Received PR ${id} "${title}" from: ${username}\nDescription: "${body}"`);
+  winston.info(`Received PR #${id} "${title}" from: ${username}\nDescription: "${body}"`);
   return {
     repo,
     id,
@@ -43,13 +42,10 @@ function isPullRequestToCheck(prDetails) {
 }
 
 function isValidPullRequestTitle(prTitle) {
-  winston.info(`Title being validated: ${prTitle}`);
-  winston.info(`Regex for title: ${process.env.REGEX_PULL_REQ_TITLE}`);
   return utils.testRegexp(process.env.REGEX_PULL_REQ_TITLE, prTitle);
 }
 
 function isValidPullRequestBody(prBody) {
-  winston.info(`Regex for body: ${process.env.REGEX_PULL_REQ_BODY}`);
   return utils.testRegexp(process.env.REGEX_PULL_REQ_BODY, prBody);
 }
 
@@ -83,14 +79,12 @@ function getViolations(prDetails) {
 }
 
 function receivePullRequest(request, response) {
-  winston.info(`Received pull request: \n${request.body}`);
   response.send();
   if (!isPullRequest(request)) {
     return;
   }
   const extractedPrDetails = extractRelevantDetails(request);
   if (isPullRequestToCheck(extractedPrDetails) && !isValidPullRequest(extractedPrDetails)) {
-    winston.info('Check Failed!');
     const responseMessage = messageBuilder.getFeedbackMessage(
       extractedPrDetails.username,
       getViolations(extractedPrDetails),

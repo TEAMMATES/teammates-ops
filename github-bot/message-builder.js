@@ -28,7 +28,6 @@ function getFormattedMessageLevelOneOrdered(message) {
 }
 
 function buildTitleFeedback(violations) {
-  winston.info(`Title Violations: ${JSON.stringify(violations)}`);
   if (violations == null) {
     winston.error('Violations is undefined');
     return '';
@@ -50,11 +49,10 @@ function buildTitleFeedback(violations) {
 
 function buildDescriptionFeedback(violations) {
   if (violations == null) {
-    winston.error('violations is undefined');
+    winston.error('Violations is undefined');
     return '';
   }
   if (Object.keys(violations).length === 0) {
-    winston.info('No description violations');
     return '';
   }
   let message = '';

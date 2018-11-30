@@ -1,4 +1,3 @@
-const winston = require('winston');
 const utils = require('./utils');
 
 /**
@@ -36,10 +35,8 @@ module.exports = {
     const violations = {};
 
     if (containsSpaceBetweenHashtagAndDigit(string)) {
-      winston.info('Detected space between # and digit');
       violations.spaceBetweenHashtagAndDigit = true;
     } else if (!containsIssueReference(string)) {
-      winston.info('Issue reference not found');
       violations.noIssueReference = true;
     }
 
@@ -52,15 +49,12 @@ module.exports = {
     const violations = {};
 
     if (containsSpaceBetweenHashtagAndDigit(string)) {
-      winston.info('Detected space between # and digit');
       violations.spaceBetweenHashtagAndDigit = true;
     } else if (!containsIssueReference(string)) {
-      winston.info('Issue reference not found');
       violations.noIssueReference = true;
     }
 
     if (!containsGithubKeyword(string)) {
-      winston.info('Missing GitHub keyword');
       violations.missingGithubKeyword = true;
     }
 
