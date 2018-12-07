@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const GitHub = require('github-api');
 const winston = require('winston');
+const webhookMiddleware = require('x-hub-signature').middleware;
 const keywordChecker = require('./keyword-checker');
 const messageBuilder = require('./message-builder');
 const utils = require('./utils');
@@ -15,7 +16,15 @@ const gh = new GitHub({
 const repo = gh.getRepo('TEAMMATES', 'teammates');
 
 // support parsing of application/json type post data
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+  verify: webhookMiddleware.extractRawBody
+}));
+
+app.use(webhookMiddleware({
+  algorithm: 'sha1',
+  secret: process.env.GITHUB_WEBHOOK_PASSWORD,
+  require: true,
+}));
 
 function isPullRequest(receivedJson) {
   return !!receivedJson.body.pull_request;
