@@ -12,6 +12,8 @@ const gh = new GitHub({
   token: process.env.GITHUB_API_TOKEN,
 });
 
+const repo = gh.getRepo('TEAMMATES', 'teammates');
+
 // support parsing of application/json type post data
 app.use(bodyParser.json());
 
@@ -89,7 +91,27 @@ function receivePullRequest(request, response) {
   }
 }
 
+function receiveStatusResult(request, response) {
+  response.send();
+  const { state, sha } = request.body;
+  if (state !== 'failure' || state !== 'error') {
+    return;
+  }
+
+  repo.listPullRequests({ per_page: 100 }).then((resp) => {
+    const prsWithMatchingSha = resp.data.filter(pr => pr.head.sha === sha);
+    for (const pr of prsWithMatchingSha) {
+      const feedback = `Hi @${pr.user.login}, your pull request has been marked as "${state}" due to the following reason:\n\n`
+          + request.body.description
+          + `\n\nYou can visit [this url](${request.body.target_url}) to find out the cause of the ${state}.`;
+      winston.info(`Going to comment on PR #${pr.number} because the status check fails, content:\n${feedback}`);
+      // commentOnPullRequest('TEAMMATES/teammates', pr.number, feedback);
+    }
+  });
+}
+
 app.post('/pull_req', receivePullRequest);
+app.post('/status', receiveStatusResult);
 
 const port = process.env.PORT || 5000;
 app.set('port', port);
