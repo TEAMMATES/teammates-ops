@@ -17,7 +17,7 @@ const repo = gh.getRepo('TEAMMATES', 'teammates');
 
 // support parsing of application/json type post data
 app.use(bodyParser.json({
-  verify: webhookMiddleware.extractRawBody
+  verify: webhookMiddleware.extractRawBody,
 }));
 
 app.use(webhookMiddleware({
@@ -33,12 +33,10 @@ function isPullRequest(receivedJson) {
 function extractRelevantDetails(receivedJson) {
   const { pull_request: pullRequest, action } = receivedJson.body;
   const { title, body } = pullRequest;
-  const repo = pullRequest.base.repo.full_name;
   const username = pullRequest.user.login;
   const id = pullRequest.number;
   logger.info(`Received PR #${id} "${title}" from: ${username}\nDescription: "${body}"`);
   return {
-    repo,
     id,
     title,
     body,
@@ -64,9 +62,8 @@ function isValidPullRequest(prDetails) {
   return isValidPullRequestTitle(prDetails.title) && isValidPullRequestBody(prDetails.body);
 }
 
-function commentOnPullRequest(repo, id, comment) {
-  const repoNameSplit = repo.split('/');
-  const issueObj = gh.getIssues(repoNameSplit[0], repoNameSplit[1]);
+function commentOnPullRequest(id, comment) {
+  const issueObj = gh.getIssues('TEAMMATES', 'teammates');
   issueObj.createIssueComment(id, comment);
 }
 
@@ -95,7 +92,7 @@ function receivePullRequest(request, response) {
       getViolations(extractedPrDetails),
       process.env.CONTRIBUTING_GUIDELINES,
     );
-    commentOnPullRequest(extractedPrDetails.repo, extractedPrDetails.id, responseMessage);
+    commentOnPullRequest(extractedPrDetails.id, responseMessage);
     logger.info(`Message to user: \n"${responseMessage}"`);
   }
 }
@@ -110,11 +107,10 @@ function receiveStatusResult(request, response) {
   repo.listPullRequests({ per_page: 100 }).then((resp) => {
     const prsWithMatchingSha = resp.data.filter(pr => pr.head.sha === sha);
     for (const pr of prsWithMatchingSha) {
-      const feedback = `Hi @${pr.user.login}, your pull request has been marked as "${state}" due to the following reason:\n\n`
-          + request.body.description
+      const feedback = `Hi @${pr.user.login}, your pull request has been marked as "${state}" due to the following reason:\n\n${request.body.description}`
           + `\n\nYou can visit [this url](${request.body.target_url}) to find out the cause of the ${state}.`;
       logger.info(`Going to comment on PR #${pr.number} because the status check fails, content:\n${feedback}`);
-      // commentOnPullRequest('TEAMMATES/teammates', pr.number, feedback);
+      // commentOnPullRequest(pr.number, feedback);
     }
   });
 }
