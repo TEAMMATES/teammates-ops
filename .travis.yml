@@ -1,0 +1,28 @@
+branches:
+  only:
+    - master
+
+notifications:
+  email: false
+
+jobs:
+  include:
+    - stage: "Tests"
+      name: "GitHub Bot"
+      language: node_js
+      node_js:
+        - "10"
+      script:
+        - cd github-bot
+        - npm install
+        - npm run lint
+        - npm run test
+    - name: "Release Script"
+      language: node_js
+      node_js:
+        - "10"
+      script:
+        - cd release-script
+        - cp config.template.js config.js
+        - npm install
+        - npm run lint
