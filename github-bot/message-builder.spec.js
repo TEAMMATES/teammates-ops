@@ -1,4 +1,4 @@
-const messageBuilder = require('../message-builder');
+const messageBuilder = require('./message-builder');
 
 const username = 'tester';
 

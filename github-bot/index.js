@@ -120,11 +120,17 @@ app.post('/status', receiveStatusResult);
 
 const port = process.env.PORT || 5000;
 app.set('port', port);
-app.listen(port, () => {
+
+const svr = app.listen(port, () => {
   logger.info(`Node app is running on port ${port}`);
 });
+
+function closeApp() {
+  svr.close();
+}
 
 // For unit testing purposes
 module.exports = {
   getViolations,
+  closeApp,
 };

@@ -1,4 +1,4 @@
-const keywordChecker = require('../keyword-checker');
+const keywordChecker = require('./keyword-checker');
 
 describe('keywordChecker', () => {
   it('should feedback when title string contains space between # and digit', () => {

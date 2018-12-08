@@ -1,4 +1,4 @@
-const index = require('../index');
+const index = require('./index');
 
 describe('index', () => {
   describe('getViolations', () => {
@@ -85,6 +85,10 @@ describe('index', () => {
         },
       };
       expect(violations).toEqual(expectedViolations);
+    });
+
+    afterAll(() => {
+      index.closeApp();
     });
   });
 });
