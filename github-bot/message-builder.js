@@ -1,4 +1,4 @@
-const winston = require('winston');
+const { logger } = require('./logger');
 
 const messages = {
   prTitle: 'PR Title',
@@ -24,7 +24,7 @@ function getFormattedMessageLevelOneOrdered(message) {
 
 function buildTitleFeedback(violations) {
   if (violations == null) {
-    winston.error('Violations is undefined');
+    logger.error('Violations is undefined');
     return '';
   }
   if (Object.keys(violations).length === 0) {
@@ -42,7 +42,7 @@ function buildTitleFeedback(violations) {
 
 function buildDescriptionFeedback(violations) {
   if (violations == null) {
-    winston.error('Violations is undefined');
+    logger.error('Violations is undefined');
     return '';
   }
   if (Object.keys(violations).length === 0) {

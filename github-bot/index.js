@@ -1,11 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const GitHub = require('github-api');
-const winston = require('winston');
 const webhookMiddleware = require('x-hub-signature').middleware;
 const keywordChecker = require('./keyword-checker');
 const messageBuilder = require('./message-builder');
 const utils = require('./utils');
+const { logger } = require('./logger');
 
 const app = express();
 // basic auth
@@ -36,7 +36,7 @@ function extractRelevantDetails(receivedJson) {
   const repo = pullRequest.base.repo.full_name;
   const username = pullRequest.user.login;
   const id = pullRequest.number;
-  winston.info(`Received PR #${id} "${title}" from: ${username}\nDescription: "${body}"`);
+  logger.info(`Received PR #${id} "${title}" from: ${username}\nDescription: "${body}"`);
   return {
     repo,
     id,
@@ -96,7 +96,7 @@ function receivePullRequest(request, response) {
       process.env.CONTRIBUTING_GUIDELINES,
     );
     commentOnPullRequest(extractedPrDetails.repo, extractedPrDetails.id, responseMessage);
-    winston.info(`Message to user: \n"${responseMessage}"`);
+    logger.info(`Message to user: \n"${responseMessage}"`);
   }
 }
 
@@ -113,7 +113,7 @@ function receiveStatusResult(request, response) {
       const feedback = `Hi @${pr.user.login}, your pull request has been marked as "${state}" due to the following reason:\n\n`
           + request.body.description
           + `\n\nYou can visit [this url](${request.body.target_url}) to find out the cause of the ${state}.`;
-      winston.info(`Going to comment on PR #${pr.number} because the status check fails, content:\n${feedback}`);
+      logger.info(`Going to comment on PR #${pr.number} because the status check fails, content:\n${feedback}`);
       // commentOnPullRequest('TEAMMATES/teammates', pr.number, feedback);
     }
   });
@@ -125,7 +125,7 @@ app.post('/status', receiveStatusResult);
 const port = process.env.PORT || 5000;
 app.set('port', port);
 app.listen(port, () => {
-  winston.info(`Node app is running on port ${port}`);
+  logger.info(`Node app is running on port ${port}`);
 });
 
 // For unit testing purposes
