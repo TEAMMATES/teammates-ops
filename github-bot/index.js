@@ -115,8 +115,42 @@ function receiveStatusResult(request, response) {
   });
 }
 
+function triggerAutoMerge(request, response) {
+  response.send();
+  const { ref } = request.body;
+  if (ref !== 'refs/heads/master') {
+    // Not a push to master branch; do nothing
+    return;
+  }
+  if (!process.env.BRANCHES_TO_UPDATE) {
+    return;
+  }
+
+  const branchesToMergeTo = process.env.BRANCHES_TO_UPDATE.split(',');
+  for (const branch of branchesToMergeTo) {
+    logger.info(`Going to auto-merge branch master to ${branch}`);
+    // request({
+    //   method: 'POST',
+    //   uri: 'https://api.github.com/repos/TEAMMATES/teammates/merges',
+    //   json: {
+    //     head: 'master',
+    //     base: branch,
+    //   },
+    //   headers: {
+    //     'User-Agent': 'teammates-bot',
+    //     Authorization: `token ${process.env.GITHUB_TOKEN}`,
+    //   },
+    // }, (error) => {
+    //   if (error) {
+    //     logger.error(error);
+    //   }
+    // });
+  }
+}
+
 app.post('/pull_req', receivePullRequest);
 app.post('/status', receiveStatusResult);
+app.post('/auto_merge', triggerAutoMerge);
 
 const port = process.env.PORT || 5000;
 app.set('port', port);
