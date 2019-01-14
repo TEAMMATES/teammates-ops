@@ -8,6 +8,7 @@ const rl = require('readline-sync');
 const { EOL: eol } = require('os');
 const { teammatesDir } = require('./config');
 const { getMilestoneInfo } = require('./milestone-api');
+const { getDisplayNameOfUser } = require('./user-api');
 
 const developersJsonDir = './src/main/webapp/data/developers.json';
 
@@ -139,27 +140,55 @@ function checkPrMetadata() {
   });
 }
 
+function syncContributorsName(contributors, index, onComplete) {
+  if (contributors.length === index) {
+    onComplete();
+    return;
+  }
+  const currentContributor = contributors[index];
+  if (!currentContributor.username) {
+    syncContributorsName(contributors, index + 1, onComplete);
+  }
+
+  getDisplayNameOfUser(currentContributor.username, (name) => {
+    if (name) {
+      currentContributor.name = name;
+    } else {
+      delete currentContributor.name;
+    }
+    // try not to exceed the rate limit of API
+    setTimeout(() => {
+      syncContributorsName(contributors, index + 1, onComplete);
+    }, 200);
+  });
+}
+
 function checkAndUpdateDevelopersJson() {
   prsInMilestone.forEach(pr => checkUsername(pr.user.login));
   if (newContributors.length) {
-    Object.keys(newContributors).forEach(i => allDevs.contributors.push({ name: '', username: newContributors[i] }));
-    fs.writeFile(developersJsonDir, JSON.stringify(allDevs, null, 2) + eol, 'UTF-8', () => {
-      function capitalize(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-      }
+    const newContributorsDetail = [];
+    Object.keys(newContributors).forEach(i => newContributorsDetail.push({ name: '', username: newContributors[i] }));
+    syncContributorsName(newContributorsDetail, 0, () => {
+      allDevs.contributors.push(...newContributorsDetail);
 
-      console.log('The execution is now paused and the username of new contributors have been temporarily added.');
-      console.log('Enter the real names of the new contributors manually, then press enter on the console to continue.');
-      rl.question();
+      fs.writeFile(developersJsonDir, JSON.stringify(allDevs, null, 2) + eol, 'UTF-8', () => {
+        function capitalize(str) {
+          return str.charAt(0).toUpperCase() + str.slice(1);
+        }
 
-      allDevs = JSON.parse(fs.readFileSync(developersJsonDir, 'UTF-8'));
-      allDevs.contributors.sort((a, b) => {
-        const aName = a.name || capitalize(a.username);
-        const bName = b.name || capitalize(b.username);
-        return aName > bName ? 1 : -1;
+        console.log('Please proofread the real names of newly added contributors. '
+          + 'Their real names may not be entered correctly on GitHub.');
+        rl.question();
+
+        allDevs = JSON.parse(fs.readFileSync(developersJsonDir, 'UTF-8'));
+        allDevs.contributors.sort((a, b) => {
+          const aName = a.name || capitalize(a.username);
+          const bName = b.name || capitalize(b.username);
+          return aName > bName ? 1 : -1;
+        });
+
+        updateDevelopersJson();
       });
-
-      updateDevelopersJson();
     });
   } else if (needUpdate) {
     updateDevelopersJson();
