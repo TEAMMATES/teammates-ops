@@ -194,7 +194,7 @@ To update the front-end timezone database:
 
 1. Setup [moment-timezone](https://github.com/moment/moment-timezone) project locally with their [developer guide](https://github.com/moment/moment-timezone/blob/develop/contributing.md#contributing).
 1. Use `grunt data` to build the project with the latest IANA timezone data.
-1. Copy the compressed `moment-timezone-with-data.min.js` in the `build` folder and override the existing file in TEAMMATES.
+1. Copy `data/packed/latest.json` and override `src/web/data/timezone.json` in TEAMMATES. You may need to modify the file slightly e.g. to fix coding style.
 
 To update the back-end timezone database:
 

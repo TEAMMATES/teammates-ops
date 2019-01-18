@@ -27,9 +27,9 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
 
 1. Modify configuration files.
    * `src/main/resources/build.properties`<br>
-     Edit the file as instructed in its comments.
+     Edit the file as instructed in its comments. In particular, modify the app ID field to match the ID of your own app.
    * `src/main/webapp/WEB-INF/appengine-web.xml`<br>
-     Modify to match app name and app id of your own app, and the version number if you need to. Do not modify anything else.
+     Modify if necessary, e.g. to change App Engine instance type and/or to set static resources cache expiration time.
 
 1. Deploy the application to your staging server.
    * With command line
