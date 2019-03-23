@@ -1,8 +1,5 @@
 # Performance Testing of TEAMMATES
 
-This report gives a detailed explanation of the profiling operations performed on TEAMMATES. It gives an outline of the
-problem and describes our proposed solution.
-
 * [Introduction](#Introduction)
 * [Problem](#Problem)
 * [A brief overview of the Proposed Solution](#Overview-of-Solution)
@@ -13,6 +10,9 @@ problem and describes our proposed solution.
 * [Future Improvements](#Future-improvements)
 
 ## Introduction
+
+This report gives a detailed explanation of the profiling operations performed on TEAMMATES. It gives an outline of the
+problem and describes our proposed solution.
 
 ## Problem
 
