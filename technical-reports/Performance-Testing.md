@@ -1,5 +1,7 @@
 # Continuous Profiling in TEAMMATES
 
+Authors: [Ronak Lakhotia](https://github.com/RonakLakhotia), [Amrut Prabhu](https://github.com/amrut-prabhu) and [Jacob Li PengCheng](https://github.com/jacoblipech)
+
 * [Introduction](#Introduction)
 * [Problem](#Problem)
 * [Overview of the Proposed Solution](#Overview-of-Solution)
