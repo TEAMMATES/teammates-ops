@@ -18,6 +18,13 @@ problem and describes the reasons behind our proposed solution.
 
 ## Problem
 
+TEAMMATES is one of the biggest student projects in the open source community. Currently, TEAMMATES boasts of a community comprising over 450 developers and a codebase 
+of nearly 130LoC. Maintaining such a project demands high quality standards to ensure long term survival. This means, 
+continuously monitoring code health and product performance. As the number of developers and user base continue to grow,
+we need to ensure optimal performance at all times. In this report, we propose a viable solution to perform regression 
+tests that will help developers keep a track of the potential bottlenecks and areas of optimizations. This will help
+boost the performance as the product evolves over time.
+
 ## Overview of Solution
 
 ## Tools considered for Performance Testing
