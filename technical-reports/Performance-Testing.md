@@ -1,18 +1,18 @@
-# Performance Testing of TEAMMATES
+# Continuous Profiling in TEAMMATES
 
 * [Introduction](#Introduction)
 * [Problem](#Problem)
-* [A brief overview of the Proposed Solution](#Overview-of-Solution)
+* [Overview of the Proposed Solution](#Overview-of-Solution)
 * [Tools considered for Performance Testing](#Tools-considered-for-Performance-Testing)
 * [Reasons for using JMeter](#Reasons-for-using-JMeter)
-* [Design of the Workflow](#Design-of-the-workflow)
-* [Findings](#Findings)
-* [Future Improvements](#Future-improvements)
+* [Current implementation of the solution](#current-implementation-of-the-solution)
+* [Findings and Recommendations](#findings-and-recommendations)
+* [Future Work](#Future-work)
 
 ## Introduction
 
-This report gives a detailed explanation of the profiling operations performed on TEAMMATES. It gives an outline of the
-problem and describes our proposed solution.
+This report gives a brief overview of the profiling operations performed on TEAMMATES. It gives an outline of the
+problem and describes the reasons behind our proposed solution.
 
 ## Problem
 
@@ -22,8 +22,8 @@ problem and describes our proposed solution.
 
 ## Reasons for using JMeter
 
-## Design of the workflow
+## Current implementation of the solution
 
-## Findings
+## Findings and Recommendations
 
-## Future Improvements
+## Future Work
