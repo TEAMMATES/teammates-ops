@@ -13,17 +13,15 @@ Authors: [Ronak Lakhotia](https://github.com/RonakLakhotia), [Amrut Prabhu](http
 
 ## Introduction
 
-This report gives a brief overview of the profiling operations performed on TEAMMATES. It gives an outline of the
-problem and describes the reasons behind our proposed solution.
+This report gives a brief overview of the profiling operations performed on TEAMMATES. It gives an outline of the problem and describes the reasons behind our proposed solution.
 
 ## Problem
 
 TEAMMATES is one of the biggest student projects in the open source community. Currently, TEAMMATES boasts of a community comprising over 450 developers and a codebase of nearly 130LoC (as of 15th April, 2019). 
-Maintaining such a project demands high quality standards to ensure long term survival. This means, 
-continuously monitoring code health and product performance. As the number of developers and user base continue to grow,
-we need to ensure optimal performance at all times. In this report, we propose a viable solution to perform regression 
-tests that will help developers keep a track of the potential bottlenecks and areas of optimizations. This will help
-boost the performance as the product evolves over time.
+Maintaining such a project demands high quality standards to ensure long term survival. 
+This means, continuously monitoring code health and product performance. As the number of developers and user base continue to grow, we need to ensure optimal performance at all times.
+In this report, we propose a viable solution to perform regression tests that will help developers keep a track of the potential bottlenecks and areas of optimizations.
+This will help boost the performance as the product evolves over time.
 
 ## Overview of Solution
 
@@ -37,7 +35,6 @@ Implementing these tests involves a few key points:
 After carefully considering various tools, we decided to use [Apache JMeter](https://jmeter.apache.org/) to help running the performance tests.
 In this report we will discuss the reasons behind why we chose JMeter and a more detailed description of our implementation.
 
-
 ## Tools considered for Performance Testing
 
 ## Reasons for using JMeter
@@ -46,8 +43,8 @@ In this report we will discuss the reasons behind why we chose JMeter and a more
 
 ## Current implementation of the solution
 
-JMeter offers us a couple of ways to perform the tests. We had the choice of performing these tests with automating tools like [jmeter-gradle plugin](https://github.com/jmeter-gradle-plugin/jmeter-gradle-plugin)
-and the [JMeter Java API](https://jmeter.apache.org/api/index.html). We explored both possibilities but ended up using the JMeter Java API. Some key observations we made:
+JMeter offers us a couple of ways to perform the tests. We had the choice of performing these tests with automating tools like [jmeter-gradle plugin](https://github.com/jmeter-gradle-plugin/jmeter-gradle-plugin) and the [JMeter Java API](https://jmeter.apache.org/api/index.html). 
+We explored both possibilities but ended up using the JMeter Java API. Some key observations we made:
 
 * The jmeter-gradle-plugin is not well maintained and does not have easy-to-find documentation. 
 * The existing resources are outdated and are not in sync with the latest version of JMeter.
