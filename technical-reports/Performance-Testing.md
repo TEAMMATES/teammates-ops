@@ -20,30 +20,48 @@ This report gives a brief overview of the profiling operations performed on TEAM
 TEAMMATES is one of the biggest student projects in the open source community. Currently, TEAMMATES boasts of a community comprising over 450 developers and a codebase of nearly 130LoC (as of 15th April, 2019). 
 Maintaining such a project demands high quality standards to ensure long term survival. 
 This means, continuously monitoring code health and product performance. As the number of developers and user base continue to grow, we need to ensure optimal performance at all times.
-In this report, we propose a viable solution to perform regression tests that will help developers keep a track of the potential bottlenecks and areas of optimizations.
+In this report, we propose a viable solution that will help developers monitor the potential bottlenecks and areas of optimizations.
 This will help boost the performance as the product evolves over time.
 
 ## Overview of Solution
 
-The idea behind L&P tests is to simplify the process of understanding production performance and enable the developers to address bottlenecks before they become genuine production issues.
+The idea behind L&P tests is to simplify the process of understanding production performance. This is done by simulating a heavy load on a server by creating a large number of virtual concurrent users to web server.
 Implementing these tests involves a few key points:
 
-* A tool/software to help performing these tests
-* A database to store the data of the profiler
-* A way of generating reports to help developers understand the metrics
+* A tool/software to help performing these tests.
+* A method to simulate a large number of users and send requests to a target server.
+* A way of generating reports to help developers understand the metrics.
 
 After carefully considering various tools, we decided to use [Apache JMeter](https://jmeter.apache.org/) to help running the performance tests.
 In this report we will discuss the reasons behind why we chose JMeter and a more detailed description of our implementation.
 
 ## Tools considered for Performance Testing
 
+Some of the tools that we considered before deciding on JMeter were:
+
+* [Gatling](https://gatling.io/)
+* [LoadRunner](https://www.guru99.com/introduction-to-hp-loadrunner-and-its-archtecture.html)
+* [BlazeMeter](https://www.blazemeter.com/)
+ 
 ## Reasons for using JMeter
 
+One of the main reasons we use JMeter over the other tools was the **extensive documentation** we found online. There are a number of resources to help you get started. Some of which we have listed below:
 
+* [JMeter Tutorial for beginners](https://www.guru99.com/jmeter-tutorials.html)
+* [How to use JMeter](https://www.blazemeter.com/blog/how-use-jmeter-assertions-three-easy-steps)
+* [The official website](https://jmeter.apache.org/usermanual/build-web-test-plan.html) also offers a good documentation on how to get started.
+
+Some other reasons why we found JMeter to be useful:
+
+**Open Source** -  JMeter is an open source software. This means that it can be downloaded free of cost. The developer can use its source code, can modify and customize it as per their requirement.
+
+**Ease of Integration** - It is easier to integrate JMeter into the project because of the [JMeter Java API](https://jmeter.apache.org/api/index.html). There is also a [jmeter-gradle plugin](https://github.com/jmeter-gradle-plugin/jmeter-gradle-plugin) if you want to make it a part of your build process.
+
+**Roust Reporting** - JMeter can generate the effective reporting. The test result can be visualized by using Graph, Chart, and Tree View. JMeter supports different formats for reporting like text, XML, HTML and JSON.
 
 ## Current implementation of the solution
 
-JMeter offers us a couple of ways to perform the tests. We had the choice of performing these tests with automating tools like [jmeter-gradle plugin](https://github.com/jmeter-gradle-plugin/jmeter-gradle-plugin) and the [JMeter Java API](https://jmeter.apache.org/api/index.html). 
+JMeter offers us a couple of ways to perform the tests. We had the choice of performing these tests with automating tools like jmeter-gradle plugin and the JMeter Java API. 
 We explored both possibilities but ended up using the JMeter Java API. Some key observations we made:
 
 * The jmeter-gradle-plugin is not well maintained and does not have easy-to-find documentation. 
@@ -69,3 +87,4 @@ A more detailed overview of the tasks performed can be seen in the [Continuous P
 ## Future Work
 
 We need to fine-tune the L&P test parameters and set suitable thresholds for failure. These should align with the goals of the application.
+Currently login takes a lot of time (compared to student profile, at least). So, we can explore the idea of using a delay after login, and testing the endpoint after that.
