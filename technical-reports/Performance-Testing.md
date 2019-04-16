@@ -13,19 +13,18 @@ Authors: [Ronak Lakhotia](https://github.com/RonakLakhotia), [Amrut Prabhu](http
 
 ## Introduction
 
-This report gives a brief overview of the profiling operations performed on TEAMMATES. It gives an outline of the problem and describes the reasons behind our proposed solution.
+This report gives a brief overview of the profiling operations performed on TEAMMATES.  In particular, it includes a detailed discussion of the Load and Performance (L&P) testing framework and justification for our solution.
 
 ## Problem
 
-TEAMMATES is one of the biggest student projects in the open source community. Currently, TEAMMATES boasts of a community comprising over 450 developers and a codebase of nearly 130LoC (as of 15th April, 2019). 
+TEAMMATES is one of the biggest student projects in the open source community. As of April 2019, TEAMMATES boasts a developer community of over 450 contributors and a codebase with ~130 KLoC. 
 Maintaining such a project demands high quality standards to ensure long term survival. 
 This means, continuously monitoring code health and product performance. As the number of developers and user base continue to grow, we need to ensure optimal performance at all times.
-In this report, we propose a viable solution that will help developers monitor the potential bottlenecks and areas of optimizations.
-This will help boost the performance as the product evolves over time.
+To do so, we need to be able to identify performance issue-prone operations with a quantitative measure so that they can be rectified.
 
 ## Overview of Solution
 
-The idea behind L&P tests is to simplify the process of understanding production performance. This is done by simulating a heavy load on a server by creating a large number of virtual concurrent users to web server.
+The idea behind L&P tests is to simplify the process of understanding production performance. The idea behind L&P tests is to simplify the process of understanding production performance and enable the developers to address bottlenecks before they become genuine production issues.
 Implementing these tests involves a few key points:
 
 * A tool/software to help performing these tests.
@@ -79,6 +78,8 @@ A brief description of the process:
     * Each test configures the test plan, similar to how it is done in the GUI. We also considered using a Builder pattern, but it didn’t make complete sense to do so (since we can’t say for sure what the components of the class are, and what order they should be in). Instead, we have created abstractions and default configurations which make it easier to create new tests.
 
 * Determine the failure threshold criteria and display the summarised results for that endpoint.
+
+* Delete the entities and data files created.
 
 A more detailed overview of the tasks performed can be seen in the [Continuous Profiling Project page](https://github.com/teammates/teammates/projects/7).
 
