@@ -38,8 +38,8 @@ In this report we will discuss the reasons behind why we chose JMeter and a more
 
 Some of the tools that we considered before deciding on JMeter were:
 
-* [Gatling](https://gatling.io/)
-* [LoadRunner](https://www.guru99.com/introduction-to-hp-loadrunner-and-its-archtecture.html)
+* [Gatling](https://gatling.io/) - It higher barrier to entry for potential contributors.
+* [LoadRunner](https://www.guru99.com/introduction-to-hp-loadrunner-and-its-archtecture.html) - This is a license tool and cost of using it is high. LoadRunner has a lot of protocols, such as HTTP, Oracle and SAP.WEB., but we don’t need this.
 * [BlazeMeter](https://www.blazemeter.com/)
  
 ## Reasons for using JMeter
@@ -85,7 +85,22 @@ A more detailed overview of the tasks performed can be seen in the [Continuous P
 
 ## Findings and Recommendations
 
+Currently the performance issue-prone operations in TEAMMATES are as follows:
+
+* Instructor page: Enrolling students
+
+* Instructor page: Viewing feedback session results by instructor
+
+* Student page: Submitting a feedback session when the number of questions is large
+
+Our aim is to test these endpoints extensively and get metrics such as latency, throughput and other relevant results.
+This is still a work-in-progress as we are yet to consolidate the results but our goal is to generate reports that will help the developers understand the performance of each endpoint. 
+
 ## Future Work
 
 We need to fine-tune the L&P test parameters and set suitable thresholds for failure. These should align with the goals of the application.
 Currently login takes a lot of time (compared to student profile, at least). So, we can explore the idea of using a delay after login, and testing the endpoint after that.
+
+We can also explore elements like Timers and JSON Extractors. By synchronizing, timer JMeter spike Testing can be achieved.
+Synchronizing timer blocks thread until a specific amount of threads has been blocked and then release them all together thus creating large instantaneous load.
+
