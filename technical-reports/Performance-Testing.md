@@ -24,7 +24,7 @@ To do so, we need to be able to identify performance issue-prone operations with
 
 ## Overview of Solution
 
-The idea behind L&P tests is to simplify the process of understanding production performance. The idea behind L&P tests is to simplify the process of understanding production performance and enable the developers to address bottlenecks before they become genuine production issues.
+The idea behind L&P tests is to simplify the process of understanding production performance and enable the developers to address bottlenecks before they become genuine production issues.
 Implementing these tests involves a few key points:
 
 * A tool/software to help performing these tests.
@@ -52,11 +52,11 @@ One of the main reasons we use JMeter over the other tools was the **extensive d
 
 Some other reasons why we found JMeter to be useful:
 
-**Open Source** -  JMeter is an open source software. This means that it can be downloaded free of cost. The developer can use its source code, can modify and customize it as per their requirement.
+**Open Source** -  JMeter is an open source software. This means that it can be downloaded free of cost. The developers can use its source code, can modify and customize it as per their requirement.
 
 **Ease of Integration** - It is easier to integrate JMeter into the project because of the [JMeter Java API](https://jmeter.apache.org/api/index.html). There is also a [jmeter-gradle plugin](https://github.com/jmeter-gradle-plugin/jmeter-gradle-plugin) if you want to make it a part of your build process.
 
-**Roust Reporting** - JMeter can generate the effective reporting. The test result can be visualized by using Graph, Chart, and Tree View. JMeter supports different formats for reporting like text, XML, HTML and JSON.
+**Roust Reporting** - JMeter can generate effective reporting. The test results can be visualized by using Graph, Chart, and Tree View. JMeter supports different formats for reporting like text, XML, HTML and JSON.
 
 ## Current implementation of the solution
 
@@ -101,6 +101,4 @@ This is still a work-in-progress as we are yet to consolidate the results but ou
 We need to fine-tune the L&P test parameters and set suitable thresholds for failure. These should align with the goals of the application.
 Currently login takes a lot of time (compared to student profile, at least). So, we can explore the idea of using a delay after login, and testing the endpoint after that.
 
-We can also explore elements like Timers and JSON Extractors. By synchronizing, timer JMeter spike Testing can be achieved.
-Synchronizing timer blocks thread until a specific amount of threads has been blocked and then release them all together thus creating large instantaneous load.
-
+We can also explore elements like Timers and JSON Extractors. By synchronizing, Timer JMeter **Spike Testing** can be achieved.
