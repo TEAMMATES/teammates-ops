@@ -19,8 +19,8 @@ This report gives a brief overview of the profiling operations performed on TEAM
 
 TEAMMATES is one of the biggest student projects in the open source community. As of April 2019, TEAMMATES boasts a codebase with ~130 KLoC. More importantly, it has over 350,000 users.
 Maintaining such a project demands high quality standards to ensure long term survival. 
-There are many factors that can cause decelerating performance of the production software like increased number of database records, increased number of simultaneous requests to the server, and a larger number of users accessing the system at any given point.
-This means, continuously monitoring code health and product performance. To do so, we need to be able to identify performance issue-prone operations with a quantitative measure so that they can be rectified.
+There are many factors that can cause degrading performance of the production software like increased number of database records, increased number of simultaneous requests to the server, and a larger number of users accessing the system at any given point.
+This means, continuously monitoring code health and product performance in order to ensure optimal performance of the software at all times. To do so, we need to be able to identify performance issue-prone operations with a quantitative measure so that they can be rectified.
 
 ## Overview of Solution
 
@@ -60,7 +60,7 @@ Some other reasons why we found JMeter to be useful:
 
 ## Current implementation of the solution
 
-JMeter offers us a couple of ways to perform the tests. We had the choice of performing these tests with automating tools like jmeter-gradle plugin and the JMeter Java API. 
+JMeter offers us a couple of ways to perform the tests. We had the choice of performing these tests with automating tools like [jmeter-gradle plugin](https://github.com/jmeter-gradle-plugin/jmeter-gradle-plugin) and the JMeter Java API. 
 We explored both possibilities but ended up using the JMeter Java API. Some key observations we made:
 
 * The jmeter-gradle-plugin is not well maintained and does not have easy-to-find documentation. The existing resources are outdated and are not in sync with the latest version of JMeter. 
@@ -71,12 +71,12 @@ A brief description of the process:
 
 * Determine the failure threshold criteria for the test according to which endpoint is being tested.
 
-* Create a test JSON and CSV file for the test.
-    * The purpose of the JSON and CSV files are to store data that is needed to test the endpoints. With the data stored in these files we can parameterize HTTP requests and simulate multiple users accessing the endpoint being tested. 
+* Create the test files for the endpoint.
+    * The purpose of the test files is to store data that is needed to test the endpoints. With the data stored in these files we can parameterize HTTP requests and simulate multiple users accessing the endpoint being tested. 
     * Since the data files are large (at least 5 times the size of test data used for E2E tests), they are not committed to the repo. This way, we can easily change the scale of the test without having to rewrite the code for generating the data.
 
 * Create the JMeter test and run.
-    * Each test configures the test plan, similar to how it is done in the GUI. We also considered using a Builder pattern, but it did not make complete sense to do so (since we cannot say for sure what the components of the class are, and what order they should be in). Instead, we have created abstractions and default configurations which make it easier to create new tests.
+    * Each test file configures the test plan, similar to how it is done in the GUI. We also considered using a Builder pattern, but it did not make complete sense to do so (since we cannot say for sure what the components of the class are, and what order they should be in). Instead, we have created abstractions and default configurations which make it easier to create new tests.
 
 * Display the summarised results for that endpoint.
 
