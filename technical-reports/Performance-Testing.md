@@ -3,8 +3,8 @@
 Authors: [Ronak Lakhotia](https://github.com/RonakLakhotia), [Amrut Prabhu](https://github.com/amrut-prabhu) and [Jacob Li PengCheng](https://github.com/jacoblipech)
 
 * [Introduction](#Introduction)
-* [Why do we need Performance Testing?](#Why-do-we-need-Performance-Testing?)
-* [Overview of the Proposed Solution](#Overview-of-Proposed-Solution)
+* [Why do we need Performance Testing?](#Why-do-we-need-Performance-Testing)
+* [Overview of Proposed Solution](#Overview-of-Proposed-Solution)
 * [Tools considered for Performance Testing](#Tools-considered-for-Performance-Testing)
 * [Reasons for using JMeter](#Reasons-for-using-JMeter)
 * [Current implementation of the solution](#current-implementation-of-the-solution)
