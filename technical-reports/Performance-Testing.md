@@ -20,7 +20,7 @@ This report gives a brief overview of the profiling operations performed on TEAM
 TEAMMATES is one of the biggest student projects in the open source community. As of April 2019, TEAMMATES boasts a codebase with ~130 KLoC. More importantly, it has over 350,000 users.
 Maintaining such a project demands high quality standards to ensure long term survival. 
 There are many factors that can cause degrading performance of the production software like increased number of database records, increased number of simultaneous requests to the server, and a larger number of users accessing the system at any given point.
-This means, continuously monitoring code health and product performance in order to ensure optimal performance of the software at all times. To do so, we need to be able to identify performance issue-prone operations with a quantitative measure so that they can be rectified.
+It is important to continuously monitor code health and product performance in order to ensure optimal performance of the software at all times. To do so, we need to be able to identify performance issue-prone operations with a quantitative measure so that they can be rectified.
 
 ## Overview of Solution
 
@@ -44,7 +44,7 @@ Some of the tools that we considered before deciding on JMeter were:
  
 ## Reasons for using JMeter
 
-One of the main reasons we use JMeter over the other tools was the **extensive documentation** we found online. There are a number of resources to help one to get started. Some of which we have listed below:
+One of the main reasons we use JMeter over the other tools was the **extensive documentation** we found online. There are a number of resources to help one to get started, some of which are:
 
 * [JMeter Tutorial for beginners](https://www.guru99.com/jmeter-tutorials.html)
 * [How to use JMeter](https://www.blazemeter.com/blog/how-use-jmeter-assertions-three-easy-steps)
@@ -60,7 +60,7 @@ Some other reasons why we found JMeter to be useful:
 
 ## Current implementation of the solution
 
-JMeter offers us a couple of ways to perform the tests. We had the choice of performing these tests with automating tools like [jmeter-gradle plugin](https://github.com/jmeter-gradle-plugin/jmeter-gradle-plugin) and the JMeter Java API. 
+JMeter offers us a couple of ways to perform the performance tests. We had the choice of performing these tests with automating tools like [jmeter-gradle plugin](https://github.com/jmeter-gradle-plugin/jmeter-gradle-plugin) and the JMeter Java API. 
 We explored both possibilities but ended up using the JMeter Java API. Some key observations we made:
 
 * The jmeter-gradle-plugin is not well maintained and does not have easy-to-find documentation. The existing resources are outdated and are not in sync with the latest version of JMeter. 
@@ -76,7 +76,7 @@ A brief description of the process:
     * Since the data files are large (at least 5 times the size of test data used for E2E tests), they are not committed to the repo. This way, we can easily change the scale of the test without having to rewrite the code for generating the data.
 
 * Create the JMeter test and run.
-    * Each test file configures the test plan, similar to how it is done in the GUI. We also considered using a Builder pattern, but it did not make complete sense to do so (since we cannot say for sure what the components of the class are, and what order they should be in). Instead, we have created abstractions and default configurations which make it easier to create new tests.
+    * Each test file configures the test plan, similar to how it is done in the GUI. We also considered using Builder pattern, but it did not make complete sense to do so (since we cannot say for sure what the components of the class are, and what order they should be in). Instead, we have created abstractions and default configurations which make it easier to create new tests.
 
 * Display the summarised results for that endpoint.
 
@@ -94,7 +94,7 @@ Currently, the performance issue-prone operations in TEAMMATES are as follows:
 
 * Student page: Submitting a feedback session when the number of questions is large
 
-Our aim is to test these endpoints extensively and get metrics such as latency, throughput and other relevant results.
+Our aim is to test the performance of these endpoints extensively and get metrics such as latency, throughput and other relevant results.
 This is still a work-in-progress as we are yet to consolidate the results but our goal is to generate reports that will help the developers understand the performance of each endpoint. 
 
 ## Future Work
