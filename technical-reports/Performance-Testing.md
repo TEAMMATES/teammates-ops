@@ -69,14 +69,14 @@ We explored both possibilities but ended up using the JMeter Java API. Some key 
 
 A brief description of the process:
 
-* Determine the failure threshold criteria according to which endpoint is being tested.
+* Determine the failure threshold criteria for the test according to which endpoint is being tested.
 
 * Create a test JSON and CSV file for the test.
     * The purpose of the JSON and CSV files are to store data that is needed to test the endpoints. With the data stored in these files we can parameterize HTTP requests and simulate multiple users accessing the endpoint being tested. 
     * Since the data files are large (at least 5 times the size of test data used for E2E tests), they are not committed to the repo. This way, we can easily change the scale of the test without having to rewrite the code for generating the data.
 
 * Create the JMeter test and run.
-    * Each test configures the test plan, similar to how it is done in the GUI. We also considered using a Builder pattern, but it did not make complete sense to do so (since we can not say for sure what the components of the class are, and what order they should be in). Instead, we have created abstractions and default configurations which make it easier to create new tests.
+    * Each test configures the test plan, similar to how it is done in the GUI. We also considered using a Builder pattern, but it did not make complete sense to do so (since we cannot say for sure what the components of the class are, and what order they should be in). Instead, we have created abstractions and default configurations which make it easier to create new tests.
 
 * Display the summarised results for that endpoint.
 
@@ -100,6 +100,6 @@ This is still a work-in-progress as we are yet to consolidate the results but ou
 ## Future Work
 
 We need to fine-tune the L&P test parameters and set suitable thresholds for failure. These should align with the goals of the application.
-Currently logging in takes a lot of time (compared to student profile, at least). So, we can explore the idea of using a delay after logging in, and testing the endpoint after that.
+Currently, logging in takes a lot of time (compared to student profile, at least). So, we can explore the idea of using a delay after logging in, and testing the endpoint after that.
 
 We can also explore elements like Timers and JSON Extractors. By synchronizing, Timer JMeter **Spike Testing** can be achieved.
