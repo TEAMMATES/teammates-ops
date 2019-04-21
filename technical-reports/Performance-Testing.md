@@ -3,8 +3,8 @@
 Authors: [Ronak Lakhotia](https://github.com/RonakLakhotia), [Amrut Prabhu](https://github.com/amrut-prabhu) and [Jacob Li PengCheng](https://github.com/jacoblipech)
 
 * [Introduction](#Introduction)
-* [Problem](#Problem)
-* [Overview of the Proposed Solution](#Overview-of-Solution)
+* [Why do we need Performance Testing?](#Why-do-we-need-Performance-Testing?)
+* [Overview of the Proposed Solution](#Overview-of-Proposed-Solution)
 * [Tools considered for Performance Testing](#Tools-considered-for-Performance-Testing)
 * [Reasons for using JMeter](#Reasons-for-using-JMeter)
 * [Current implementation of the solution](#current-implementation-of-the-solution)
@@ -15,14 +15,14 @@ Authors: [Ronak Lakhotia](https://github.com/RonakLakhotia), [Amrut Prabhu](http
 
 This report gives a brief overview of the profiling operations performed on TEAMMATES.  In particular, it includes a detailed discussion of the Load and Performance (L&P) testing framework and the process we followed.
 
-## Problem
+## Why do we need Performance Testing?
 
 TEAMMATES is one of the biggest student projects in the open source community. As of April 2019, TEAMMATES boasts a codebase with ~130 KLoC. More importantly, it has over 350,000 users.
 Maintaining such a project demands high quality standards to ensure long term survival. 
 There are many factors that can cause degrading performance of the production software like increased number of database records, increased number of simultaneous requests to the server, and a larger number of users accessing the system at any given point.
 It is important to continuously monitor code health and product performance in order to ensure optimal performance of the software at all times. To do so, we need to be able to identify performance issue-prone operations with a quantitative measure so that they can be rectified.
 
-## Overview of Solution
+## Overview of Proposed Solution
 
 The idea behind L&P tests is to simplify the process of understanding production performance and enable the developers to address bottlenecks before they become genuine production issues.
 Implementing these tests involves a few key points:
