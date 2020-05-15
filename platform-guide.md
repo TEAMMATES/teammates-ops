@@ -31,6 +31,10 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
    * `src/main/webapp/WEB-INF/appengine-web.xml`<br>
      Modify if necessary, e.g. to change App Engine instance type and/or to set static resources cache expiration time.
 
+1. Ensure that the front-end files have been built.
+   * Google App Engine will handle the build process necessary for Java back-end, but will not do the same for the Angular front-end.
+   * You can refer to the TEAMMATES [developer documentation](https://github.com/madanalogy/teammates/blob/master/docs/development.md#building-front-end-files) on building front-end files.
+
 1. Deploy the application to your staging server.
    * With command line
      * Run the following command:
