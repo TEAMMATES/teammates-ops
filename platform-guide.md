@@ -33,7 +33,7 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
 
 1. Ensure that the front-end files have been built.
    * Google App Engine will handle the build process necessary for Java back-end, but will not do the same for the Angular front-end.
-   * You can refer to the TEAMMATES [developer documentation](https://github.com/madanalogy/teammates/blob/master/docs/development.md#building-front-end-files) on building front-end files.
+   * You can refer to the TEAMMATES [developer documentation](https://github.com/TEAMMATES/teammates/blob/master/docs/development.md#building-front-end-files) on building front-end files.
 
 1. Deploy the application to your staging server.
    * With command line
