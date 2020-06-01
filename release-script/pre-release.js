@@ -9,7 +9,7 @@ const { EOL: eol } = require('os');
 const { teammatesDir } = require('./config');
 const { getMilestoneInfo } = require('./milestone-api');
 
-const developersJsonDir = './src/main/webapp/data/developers.json';
+const developersJsonDir = './src/web/data/developers.json';
 
 let prsInMilestone;
 let needUpdate = false;
@@ -17,7 +17,7 @@ let needUpdate = false;
 shell.config.silent = true;
 shell.cd(teammatesDir);
 console.log('Updating master branch...');
-shell.exec('git reset --hard');
+shell.exec('git stash');
 shell.exec('git checkout master');
 shell.exec('git pull');
 console.log('');
@@ -66,6 +66,7 @@ function updateDevelopersJson() {
     .filter(username => !singleContributors[username])
     .forEach(username => allDevs.contributors
       .filter(obj => obj.username === username)
+      .filter(obj => !obj.major)
       .forEach((obj) => {
         const { name: n, username: un } = obj;
         delete obj.name;

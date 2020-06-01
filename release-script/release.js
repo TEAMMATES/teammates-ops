@@ -15,12 +15,12 @@ let prsInMilestone;
 shell.config.silent = true;
 shell.cd(teammatesDir);
 console.log('Updating master branch...');
-shell.exec('git reset --hard');
+shell.exec('git stash');
 shell.exec('git checkout master');
 shell.exec('git pull');
 console.log('');
 
-const developersJsonDir = './src/main/webapp/data/developers.json';
+const developersJsonDir = './src/web/data/developers.json';
 const allDevs = JSON.parse(fs.readFileSync(developersJsonDir, 'UTF-8'));
 const usernameToNameMap = {};
 const prNumberToMetadataMap = {};
