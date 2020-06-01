@@ -25,7 +25,10 @@ Contributors:
 * Can comment on any issue and PR.
 
 Contributors who have shown contributions sustained over a long period of time will be duly recognized as **major contributors**, and will be invited to join the TEAMMATES organization. Major contributors:
-* Can be assigned to issues.
+* Can be assigned or assign themselves to issues.
+* Can label and close any issue as they see fit.
+* Can label PRs opened by themselves.
+* Can assign reviewers to PRs authored by themselves.
 
 ## Committer
 
@@ -36,10 +39,7 @@ Committers are community members who have shown:
 
 On top of contributor's privileges, committers:
 * Have "push" access to the main repository and has the option to submit their fixes via PRs from the main repository.
-* Can label and close any issue as they see fit.
-* Can label PRs opened by themselves.
-* Can assign themselves to issues.
-* Can assign reviewers to PRs authored by themselves.
+* Can be assigned or assign themselves to review PRs.
 * Can merge approved PRs authored by themselves.
 
 ## Core team member
@@ -50,13 +50,12 @@ They are expected to be familiar with the development workflow.
 
 On top of committer's privileges, core team members:
 * Can label and close any PR as they see fit.
-* Can be assigned or assign themselves to review PRs.
 * Can merge approved PRs reviewed by themselves.
 
 Core team members are expected to:
 * Contribute (i.e. pledge at least one issue) to almost every release cycle, thereby helping to maintain the project velocity.
   They are also strongly encouraged to pick at least one high priority issue for each release cycle.
-* Respond to community members trying to reach the project team members, e.g. requesting for help or introducing themselves.
+* Respond to community members trying to reach the project team members, e.g. requesting for help.
 * Cover all of [maintainer's duties](maintainer-guide.md).
 
 Core team members can progress through various ranks, with different duties involved in those ranks.
@@ -99,3 +98,5 @@ Project leads have the following duties:
 
 Project mentors are experienced past team members or domain/industry experts who take on advisory role for current team members.
 They are not obliged to actively contribute code to the project or perform maintenance tasks.
+
+Project mentors who are promoted from a previous team member position will retain all their previous privileges. Otherwise, the privilege is granted on a case-by-case basis.
