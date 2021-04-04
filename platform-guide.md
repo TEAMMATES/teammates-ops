@@ -3,6 +3,7 @@
 This document details the operations where Google Cloud Platform (GCP) is involved.
 
 * [Deploying to a staging server](#deploying-to-a-staging-server)
+* [Setting up OAuth 2.0 client](#setting-up-oauth-20-client)
 * [Setting up Google Cloud Storage](#setting-up-google-cloud-storage)
 * [Running client scripts](#running-client-scripts)
 * [Setting up Gmail API credentials](#setting-up-gmail-api-credentials)
@@ -31,7 +32,7 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
 
 1. Modify configuration files.
    * `src/main/resources/build.properties`<br>
-     Edit the file as instructed in its comments. In particular, modify the app ID field to match the ID of your own project.
+     Edit the file as instructed in its comments. In particular, modify the app ID field to match the ID of your own project and the OAuth 2.0 client ID used for authentication.
    * `src/main/webapp/WEB-INF/appengine-web.xml`<br>
      Modify if necessary, e.g. to change App Engine instance type and/or to set static resources cache expiration time.
 
@@ -63,6 +64,20 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
    * If you do not wish to set the deployed version as the default, you can access the deployed app using
      `https://{version}-dot-teammates-john.appspot.com`, e.g `https://7-0-0-dot-teammates-john.appspot.com`.
 
+## Setting up OAuth 2.0 Client
+
+You need to set up an OAuth 2.0 client in order to support user authentication in the production system.
+
+1. Go to [Google Cloud APIs & Services Credentials console](https://console.cloud.google.com/apis/credentials).
+1. Click `Create credentials` and then select `OAuth client ID`.
+1. Choose `Web Application` and give the client a name (the exact name does not matter).
+1. Under `Authorised redirect URIs`, add the following URLs:
+   * Your app URL + `/oauth2callback`, e.g. `https://teammates-john.appspot.com/oauth2callback`.
+   * If you want to test this in your dev server, you also need to add `http://localhost:8080/oauth2callback`.
+1. Click `Create`. You will be shown the client ID and client secret; save both information for later.
+
+Note that the redirect URIs are exact and only work for the URIs specified, without wildcards, version number specifier, etc. If you want to allow redirect for specific version (e.g. `https://7-0-0-dot-teammates-john.appspot.com`), you need to add the entry `https://7-0-0-dot-teammates-john.appspot.com/oauth2callback` to the list of URIs.
+
 ## Setting up Google Cloud Storage
 
 Some features that require blob/binary data storage (as opposed to structured data storage), such as profile pictures, use Google Cloud Storage.
@@ -82,16 +97,12 @@ Follow the steps until you see `Credentials saved to file: [...].` printed on th
 ## Setting up Gmail API Credentials
 
 [Gmail API](https://developers.google.com/gmail/api/) can be used to access Gmail accounts.
-You may need Gmail API credentials e.g. for testing against production server.
+You may need Gmail API credentials for testing against production server, particularly if you are testing that the emails are sent by the system.
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/), select your TEAMMATES project if it is not selected and click `API Manager`.\
-   Click `ENABLE API`.\
-   Click `Gmail API` under `G Suite APIs` and then click `ENABLE`.
-1. Alternatively, you can use [Gmail API Wizard](https://console.cloud.google.com/start/api?id=gmail) to enable `Gmail API`.
-1. Click `Credentials` in the menu of the `API Manager`.
-1. Click `Create credentials` and then select `OAuth client ID`.
-1. Choose `Other`, give it a name, e.g. `teammates` and click `Create`. You will then get shown your client ID details, click `OK`.
-1. Click the `Download JSON` icon.
+1. Enable [Gmail API](https://console.cloud.google.com/marketplace/product/google/gmail.googleapis.com) for your project.
+1. Create an OAuth 2.0 client to be used by the tests. The step is very similar to creating OAuth 2.0 client for user authentication in the production system, with the following differences:
+   * The client application type will be `Desktop app`.
+1. After creating the client, download the JSON file corresponding to the client setup. You will need this file for later.
 
 ## Datastore backup and recovery
 

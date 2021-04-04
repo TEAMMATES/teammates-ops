@@ -21,6 +21,7 @@ Here are the tools used for TEAMMATES development/operations:
   * [Google Cloud Scheduler](https://cloud.google.com/scheduler/) as the cron job scheduler
   * [Google Cloud Logging](https://cloud.google.com/logging/) for application logs
   * [Google Cloud Trace](https://cloud.google.com/trace/) for performance and latency monitoring
+* [Google OAuth 2.0](https://developers.google.com/identity/protocols/oauth2) for user authentication
 * [SendGrid](https://sendgrid.com/) as the primary email sending service.
 * GitHub for hosting [code](https://github.com/TEAMMATES/teammates), [issue tracker](https://github.com/TEAMMATES/teammates/issues), [code patches](https://github.com/TEAMMATES/teammates/pulls), as well as [project management](https://github.com/TEAMMATES/teammates/projects)
 * [![GitHub Actions Build Status Component Tests](https://github.com/TEAMMATES/teammates/workflows/Component%20Tests/badge.svg)](https://github.com/TEAMMATES/teammates/actions) [![GitHub Actions Build Status E2E Tests](https://github.com/TEAMMATES/teammates/workflows/E2E%20Tests/badge.svg)](https://github.com/TEAMMATES/teammates/actions) GitHub Actions for building/testing
