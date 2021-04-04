@@ -1,0 +1,45 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  github-bot:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: github-bot
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
+      - name: Install dependencies
+        run: npm install
+      - name: Run Lint Checks
+        run: npm run lint
+      - name: Run Tests
+        run: npm run test
+  release-script:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: release-script
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
+      - name: Copy config files
+        run: cp config.template.js config.js
+      - name: Install dependencies
+        run: npm install
+      - name: Run Lint Checks
+        run: npm run lint

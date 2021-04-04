@@ -1,6 +1,6 @@
 # TEAMMATES Maintenance and Operations Guide
 
-[![Build Status](https://travis-ci.com/TEAMMATES/teammates-ops.svg?branch=master)](https://travis-ci.com/TEAMMATES/teammates-ops)
+[![GitHub Actions Build Status Tests](https://github.com/TEAMMATES/teammates-ops/workflows/Tests/badge.svg)](https://github.com/TEAMMATES/teammates-ops/actions)
 
 This is the maintenance web site for TEAMMATES. It consists of documentations and several sub-projects necessary for keeping TEAMMATES running.
 
