@@ -5,6 +5,7 @@ This document details the operations where Google Cloud Platform (GCP) is involv
 * [Deploying to a staging server](#deploying-to-a-staging-server)
 * [Setting up OAuth 2.0 client](#setting-up-oauth-20-client)
 * [Setting up Google Cloud Storage](#setting-up-google-cloud-storage)
+* [Setting up Solr](#setting-up-solr)
 * [Running client scripts](#running-client-scripts)
 * [Setting up Gmail API credentials](#setting-up-gmail-api-credentials)
 * [Datastore backup and recovery](#datastore-backup-and-recovery)
@@ -83,6 +84,46 @@ Note that the redirect URIs are exact and only work for the URIs specified, with
 Some features that require blob/binary data storage (as opposed to structured data storage), such as profile pictures, use Google Cloud Storage.
 
 By default, when you create a Google App Engine instance, you will get a bucket named `{your-app-id}.appspot.com`. If you do not wish to use this default bucket, you are free to [create other buckets](https://cloud.google.com/storage/docs/creating-buckets).
+
+## Setting up Solr
+
+We are using [Apache Solr](https://solr.apache.org/) to support full-text searches, such as looking up for students/instructors by name or by course.
+
+To enable usage of Solr, we deploy a single Solr instance within [Google Compute Engine](https://cloud.google.com/compute) and build a [VPC connector](https://cloud.google.com/vpc/docs/serverless-vpc-access) to allow connection from the Google App Engine application.
+
+The steps to create the Solr instance are as follows:
+1. Go to [Google Compute Engine console](https://console.cloud.google.com/compute/instances) and click `Create Instance`.
+1. Create a VM with the following configuration:
+   - Name: any name of your choice
+   - Region, zone: the region of your GAE application
+   - Machine configuration: as necessary. To get the cheapest possible machine, select `General Purpose > N1 > f1-micro`
+   - Boot disk: as necessary. To get the cheapest possible disk, use 10 GB `Standard persistent disk`.
+     - Note that the instruction will assume that the OS used is `Debian`.
+   - Firewall: Disallow both HTTP and HTTPS traffic
+   - All other settings can remain as per default.
+1. Click `Create` and wait until the VM is booted. Note down the internal IP address.
+1. SSH into the VM.
+1. Run all the commands inside [the setup file](scripts/solr-setup.sh), in order.
+1. In `build.properties`, set the value of `app.search.service.host` to the internal IP address plus `/solr`, e.g. `http://10.128.0.1/solr`.
+
+After the above operation, you will have a running VM with a Solr instance running in it, and have configured your application to connect to it via internal IP address. This is not sufficient as the VM instance is not accessible by public web. However, that is not the intended outcome either; you only want the VM to be accessible by your deployed application and nothing else.
+
+To fix that, you need to build a VPC connector. The steps to create the VPC connector are as dollows:
+1. Enable [Serverless VPC Access API](https://console.cloud.google.com/marketplace/product/google/vpcaccess.googleapis.com) for your project.
+1. Go to <https://console.cloud.google.com/networking/connectors/list> and select `Create Connector`.
+1. Create a connector with the following configuration:
+   - Name: any name of your choice
+   - Region: the region of your GAE application
+   - Network: `default`
+   - Subnet: `Custom IP range`
+   - IP range: `10.8.0.0`
+1. In `appengine-web.xml`, add the following lines:
+   ```xml
+   <vpc-access-connector>
+       <name>projects/{projectId}/locations/{projectRegion}/connectors/{name}</name>
+   </vpc-access-connector>
+   ```
+1. Re-deploy the application after the above change. It should now be able to connect to the VMs within the region.
 
 ## Running client scripts
 
