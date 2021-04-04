@@ -23,8 +23,7 @@ Here are the tools used for TEAMMATES development/operations:
   * [Google Cloud Trace](https://cloud.google.com/trace/) for performance and latency monitoring
 * [SendGrid](https://sendgrid.com/) as the primary email sending service.
 * GitHub for hosting [code](https://github.com/TEAMMATES/teammates), [issue tracker](https://github.com/TEAMMATES/teammates/issues), [code patches](https://github.com/TEAMMATES/teammates/pulls), as well as [project management](https://github.com/TEAMMATES/teammates/projects)
-* [![Travis Build Status](https://travis-ci.org/TEAMMATES/teammates.svg?branch=master)](https://travis-ci.org/TEAMMATES/teammates) Travis CI for building/testing in Linux environment
-* [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/dvr6t33lqg6hsmxw/branch/master?svg=true)](https://ci.appveyor.com/project/damithc/teammates/branch/master) AppVeyor CI for building/testing in Windows environment
+* [![GitHub Actions Build Status Component Tests](https://github.com/TEAMMATES/teammates/workflows/Component%20Tests/badge.svg)](https://github.com/TEAMMATES/teammates/actions) [![GitHub Actions Build Status E2E Tests](https://github.com/TEAMMATES/teammates/workflows/E2E%20Tests/badge.svg)](https://github.com/TEAMMATES/teammates/actions) GitHub Actions for building/testing
 * [![Codecov Coverage Status](https://codecov.io/gh/TEAMMATES/teammates/branch/master/graph/badge.svg)](https://codecov.io/gh/TEAMMATES/teammates) Codecov for hosting code coverage reports
 
 ## Sub-projects

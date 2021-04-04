@@ -219,7 +219,7 @@ There may be times where a major feature development/refactoring necessitates a 
 For the usage of such a branch, the following practices should be observed:
 
 * There should be at least one team member in charge of the branch.
-* The first commit of the branch should be allowing CI to run on that branch. This can be done by modifying `.travis.yml` and `appveyor.yml`.
+* The first commit of the branch should be allowing CI to run on that branch. This can be done by modifying the relevant GitHub Actions configurations in `.github/workflows`.
 * Keep this long-lived branch in sync with `master` periodically. Syncing should be done strictly by rebasing in order to preserve all the individual commits and to keep the commit history linear.
   * The team member(s) in charge will be responsible for syncing with the `master` branch, including resolving conflicts.
 * When the long-lived branch is ready to be merged to the `master` branch:
