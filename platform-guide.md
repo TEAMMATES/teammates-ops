@@ -1,6 +1,6 @@
 # Platform Guide
 
-This document details the operations where Google Cloud Platform is involved.
+This document details the operations where Google Cloud Platform (GCP) is involved.
 
 * [Deploying to a staging server](#deploying-to-a-staging-server)
 * [Setting up Google Cloud Storage](#setting-up-google-cloud-storage)
@@ -14,10 +14,14 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
 
 ## Deploying to a staging server
 
-1. Create your own app on GAE.<br>
-   Suggested app identifier: `teammates-yourname` (e.g `teammates-john`).<br>
+1. Create your own project on GCP.<br>
+   Suggested project identifier: `teammates-yourname` (e.g `teammates-john`).<br>
    The eventual URL of the app will be like this: `https://teammates-john.appspot.com`.<br>
-   Subsequent instructions will assume that the app identifier is `teammates-john`.
+   Subsequent instructions will assume that the project identifier is `teammates-john`.
+
+1. Enable the following APIs in your project:
+   - [Cloud Tasks API](https://console.cloud.google.com/apis/library/cloudtasks.googleapis.com)
+   - [Cloud Scheduler API](https://console.cloud.google.com/apis/library/cloudscheduler.googleapis.com)
 
 1. [Authorize your Google account to be used by the Google Cloud SDK](https://cloud.google.com/sdk/docs/authorizing) if you have not done so.
    ```sh
@@ -27,7 +31,7 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
 
 1. Modify configuration files.
    * `src/main/resources/build.properties`<br>
-     Edit the file as instructed in its comments. In particular, modify the app ID field to match the ID of your own app.
+     Edit the file as instructed in its comments. In particular, modify the app ID field to match the ID of your own project.
    * `src/main/webapp/WEB-INF/appengine-web.xml`<br>
      Modify if necessary, e.g. to change App Engine instance type and/or to set static resources cache expiration time.
 
@@ -36,39 +40,34 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
    * You can refer to the TEAMMATES [developer documentation](https://github.com/TEAMMATES/teammates/blob/master/docs/development.md#building-front-end-files) on building front-end files.
 
 1. Deploy the application to your staging server.
-   * With command line
-     * Run the following command:
+   * Run the following command:
 
-       ```sh
-       ./gradlew appengineDeployAll
-       ```
-     * Wait until you see all the following messages or similar on the console:
-       * `Deployed service [default] to [https://6-0-0-dot-teammates-john.appspot.com]`
-       * `Cron jobs have been updated.`
-       * `Indexes are being rebuilt. This may take a moment.`
-       * `Task queues have been updated.`
-     * You can also deploy individual configurations independently as follows:
-       * Application: `./gradlew appengineDeploy`
-       * Cron job configuration: `./gradlew appengineDeployCron`
-       * Datastore indexes: `./gradlew appengineDeployIndex`
-       * Task queue configuration: `./gradlew appengineDeployQueue`
-   * With Eclipse
-     * Refer to [this guide](https://cloud.google.com/eclipse/docs/deploying) to deploy your application.
-   * With IntelliJ
-     * Refer to [this guide](https://cloud.google.com/tools/intellij/docs/deploy-std#deploying_to_the_standard_environment) to deploy your application.
+     ```sh
+     ./gradlew appengineDeployAll
+     ```
+   * Wait until you see all the following messages or similar on the console:
+     * `Deployed service [default] to [https://7-0-0-dot-teammates-john.appspot.com]`
+     * `Cron jobs have been updated.`
+     * `Indexes are being rebuilt. This may take a moment.`
+     * `Task queues have been updated.`
+   * You can also deploy individual configurations independently as follows:
+     * Application: `./gradlew appengineDeploy`
+     * Cron job configuration: `./gradlew appengineDeployCron`
+     * Datastore indexes: `./gradlew appengineDeployIndex`
+     * Task queue configuration: `./gradlew appengineDeployQueue`
 
 1. (Optional) Set the version you deployed as the "default":
    * Go to App Engine dashboard: `https://console.cloud.google.com/appengine?project=teammates-john`.
-   * Click `Versions` under `Main` menu on the left bar.
+   * Click `Versions` on the left bar.
    * Tick the checkbox next to the deployed version and select `Migrate Traffic`. Wait for a few minutes.
    * If you do not wish to set the deployed version as the default, you can access the deployed app using
-     `https://{version}-dot-teammates-john.appspot.com`, e.g `https://6-0-0-dot-teammates-john.appspot.com`.
+     `https://{version}-dot-teammates-john.appspot.com`, e.g `https://7-0-0-dot-teammates-john.appspot.com`.
 
 ## Setting up Google Cloud Storage
 
 Some features that require blob/binary data storage (as opposed to structured data storage), such as profile pictures, use Google Cloud Storage.
 
-Refer to [this guide](https://cloud.google.com/appengine/docs/standard/java/googlecloudstorageclient/setting-up-cloud-storage#activating_a_cloud_storage_bucket) in order to activate a bucket for your staging server.
+By default, when you create a Google App Engine instance, you will get a bucket named `{your-app-id}.appspot.com`. If you do not wish to use this default bucket, you are free to [create other buckets](https://cloud.google.com/storage/docs/creating-buckets).
 
 ## Running client scripts
 
