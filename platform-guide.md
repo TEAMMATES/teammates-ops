@@ -34,8 +34,8 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
 1. Modify configuration files.
    * `src/main/resources/build.properties`<br>
      Edit the file as instructed in its comments. In particular, modify the app ID field to match the ID of your own project and the OAuth 2.0 client ID used for authentication.
-   * `src/main/webapp/WEB-INF/appengine-web.xml`<br>
-     Modify if necessary, e.g. to change App Engine instance type and/or to set static resources cache expiration time.
+   * `src/main/appengine/app.yaml`<br>
+     Modify if necessary, e.g. to change App Engine instance type, to set static resources cache expiration time, or to set automatic scaling policies.
 
 1. Ensure that the front-end files have been built.
    * Google App Engine will handle the build process necessary for Java back-end, but will not do the same for the Angular front-end.
@@ -117,11 +117,10 @@ To fix that, you need to build a VPC connector. The steps to create the VPC conn
    - Network: `default`
    - Subnet: `Custom IP range`
    - IP range: `10.8.0.0`
-1. In `appengine-web.xml`, add the following lines:
-   ```xml
-   <vpc-access-connector>
-       <name>projects/{projectId}/locations/{projectRegion}/connectors/{name}</name>
-   </vpc-access-connector>
+1. In `app.yaml`, add the following lines:
+   ```yml
+   vpc_access_connector:
+     name: projects/{projectId}/locations/{projectRegion}/connectors/{name}
    ```
 1. Re-deploy the application after the above change. It should now be able to connect to the VMs within the region.
 
