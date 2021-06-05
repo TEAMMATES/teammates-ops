@@ -1,8 +1,8 @@
 const request = require('request');
-const { githubUsername, milestone } = require('./config');
+const { githubUsername, githubPassword, milestone } = require('./config');
 
-if (!githubUsername || !milestone) {
-  console.log('Milestone API could not proceed. Please specify a milestone and your GitHub username for authentication.');
+if (!githubUsername || !githubPassword || !milestone) {
+  console.log('Milestone API could not proceed. Please specify a milestone and your GitHub username & password for authentication.');
   process.exit();
 }
 
@@ -13,6 +13,7 @@ function createRequestObject(uri) {
     uri,
     headers: {
       'User-Agent': githubUsername,
+      Authorization: `Basic ${Buffer.from(`${githubUsername}:${githubPassword}`).toString('base64')}`,
     },
   };
 }
