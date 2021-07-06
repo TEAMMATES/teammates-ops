@@ -106,6 +106,16 @@ The steps to create the Solr instance are as follows:
 1. Click `Create` and wait until the VM is booted. Note down the internal IP address.
 1. SSH into the VM.
 1. Run all the commands inside [the setup file](scripts/solr-setup.sh), in order.
+   - While doing the above, note down your username inside the VM and the directory in which Solr is installed.
+   - The next step will assume username of `john` and Solr installation directory of `/home/john/solr-8.8.1`.
+1. Add the following custom metadata to the VM:
+   - Key: `startup-script`
+   - Value:
+     ```sh
+     #! /bin/bash
+     sudo -u john /home/john/solr-8.8.1/bin/solr start
+     ```
+1. Stop and restart the VM.
 1. In `build.properties`, set the value of `app.search.service.host` to the internal IP address plus the port number (should be `8983` unless you specifically use other port) plus `/solr`, e.g. `http://10.128.0.1:8983/solr`.
 
 After the above operation, you will have a running VM with a Solr instance running in it, and have configured your application to connect to it via internal IP address. This is not sufficient as the VM instance is not accessible by public web. However, that is not the intended outcome either; you only want the VM to be accessible by your deployed application and nothing else.
