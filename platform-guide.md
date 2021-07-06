@@ -36,6 +36,8 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
      Edit the file as instructed in its comments. In particular, modify the app ID field to match the ID of your own project and the OAuth 2.0 client ID used for authentication.
    * `src/main/appengine/app.yaml`<br>
      Modify if necessary, e.g. to change App Engine instance type, to set static resources cache expiration time, or to set automatic scaling policies.
+   * `src/web/environments/config.ts`<br>
+     Modify if necessary, e.g. to change the version number displayed to user. Note that this modification needs to be done before building the front-end files.
 
 1. Ensure that the front-end files have been built.
    * Google App Engine will handle the build process necessary for Java back-end, but will not do the same for the Angular front-end.
@@ -104,19 +106,20 @@ The steps to create the Solr instance are as follows:
 1. Click `Create` and wait until the VM is booted. Note down the internal IP address.
 1. SSH into the VM.
 1. Run all the commands inside [the setup file](scripts/solr-setup.sh), in order.
-1. In `build.properties`, set the value of `app.search.service.host` to the internal IP address plus `/solr`, e.g. `http://10.128.0.1/solr`.
+1. In `build.properties`, set the value of `app.search.service.host` to the internal IP address plus the port number (should be `8983` unless you specifically use other port) plus `/solr`, e.g. `http://10.128.0.1:8983/solr`.
 
 After the above operation, you will have a running VM with a Solr instance running in it, and have configured your application to connect to it via internal IP address. This is not sufficient as the VM instance is not accessible by public web. However, that is not the intended outcome either; you only want the VM to be accessible by your deployed application and nothing else.
 
-To fix that, you need to build a VPC connector. The steps to create the VPC connector are as dollows:
+To fix that, you need to build a VPC connector. The steps to create the VPC connector are as follows:
 1. Enable [Serverless VPC Access API](https://console.cloud.google.com/marketplace/product/google/vpcaccess.googleapis.com) for your project.
 1. Go to <https://console.cloud.google.com/networking/connectors/list> and select `Create Connector`.
 1. Create a connector with the following configuration:
    - Name: any name of your choice
    - Region: the region of your GAE application
-   - Network: `default`
+   - Network: `default` (this should be the network whereby the VM previously created is located in)
    - Subnet: `Custom IP range`
    - IP range: `10.8.0.0`
+   - All other settings can be modified as necessary.
 1. In `app.yaml`, add the following lines:
    ```yml
    vpc_access_connector:

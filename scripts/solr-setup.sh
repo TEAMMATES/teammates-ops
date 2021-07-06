@@ -3,9 +3,11 @@
 # Install Java
 sudo apt update
 sudo apt install default-jre
+sudo apt install lsof
 
 # Download Solr
-curl https://downloads.apache.org/lucene/solr/8.8.1/solr-8.8.1.tgz -o solr-8.8.1.tgz
+# You are free to use any version of Solr, but this script will use 8.8.1
+curl https://archive.apache.org/dist/lucene/solr/8.8.1/solr-8.8.1.tgz -o solr-8.8.1.tgz
 tar xzf solr-8.8.1.tgz
 
 # Start Solr
