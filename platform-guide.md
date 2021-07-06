@@ -16,6 +16,8 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
 
 ## Deploying to a staging server
 
+Note: This document does not have preference over either GAE standard or flexible environment. It is your duty to decide on the environment you will be using based on your needs.
+
 1. Create your own project on GCP.<br>
    Suggested project identifier: `teammates-yourname` (e.g `teammates-john`).<br>
    The eventual URL of the app will be like this: `https://teammates-john.appspot.com`.<br>
@@ -24,6 +26,7 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
 1. Enable the following APIs in your project:
    - [Cloud Tasks API](https://console.cloud.google.com/apis/library/cloudtasks.googleapis.com)
    - [Cloud Scheduler API](https://console.cloud.google.com/apis/library/cloudscheduler.googleapis.com)
+   - [Cloud Debugger API](https://console.cloud.google.com/apis/library/clouddebugger.googleapis.com)
 
 1. [Authorize your Google account to be used by the Google Cloud SDK](https://cloud.google.com/sdk/docs/authorizing) if you have not done so.
    ```sh
@@ -35,19 +38,22 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
    * `src/main/resources/build.properties`<br>
      Edit the file as instructed in its comments. In particular, modify the app ID field to match the ID of your own project and the OAuth 2.0 client ID used for authentication.
    * `src/main/appengine/app.yaml`<br>
-     Modify if necessary, e.g. to change App Engine instance type, to set static resources cache expiration time, or to set automatic scaling policies.
+     Modify if necessary, e.g. to change App Engine instance type (standard env), to set static resources cache expiration time (standard env), to set required CPU/memory resources (flexible env), to configure liveness check (flexible env), or to set automatic scaling policies.
    * `src/web/environments/config.ts`<br>
      Modify if necessary, e.g. to change the version number displayed to user. Note that this modification needs to be done before building the front-end files.
 
 1. Ensure that the front-end files have been built.
-   * Google App Engine will handle the build process necessary for Java back-end, but will not do the same for the Angular front-end.
    * You can refer to the TEAMMATES [developer documentation](https://github.com/TEAMMATES/teammates/blob/master/docs/development.md#building-front-end-files) on building front-end files.
 
 1. Deploy the application to your staging server.
    * Run the following command:
 
      ```sh
+     # Deploy to standard env
      ./gradlew appengineDeployAll
+
+     # Deploy to flex env
+     ./gradlew appengineDeployAll -Pflex
      ```
    * Wait until you see all the following messages or similar on the console:
      * `Deployed service [default] to [https://7-0-0-dot-teammates-john.appspot.com]`
@@ -55,7 +61,7 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
      * `Indexes are being rebuilt. This may take a moment.`
      * `Task queues have been updated.`
    * You can also deploy individual configurations independently as follows:
-     * Application: `./gradlew appengineDeploy`
+     * Application: `./gradlew appengineDeploy` (or `./gradlew appengineDeploy -Pflex`)
      * Cron job configuration: `./gradlew appengineDeployCron`
      * Datastore indexes: `./gradlew appengineDeployIndex`
      * Task queue configuration: `./gradlew appengineDeployQueue`
@@ -120,6 +126,8 @@ The steps to create the Solr instance are as follows:
 
 After the above operation, you will have a running VM with a Solr instance running in it, and have configured your application to connect to it via internal IP address. This is not sufficient as the VM instance is not accessible by public web. However, that is not the intended outcome either; you only want the VM to be accessible by your deployed application and nothing else.
 
+Note: If you are deploying to GAE flexible environment, this step is not required and can be skipped.
+
 To fix that, you need to build a VPC connector. The steps to create the VPC connector are as follows:
 1. Enable [Serverless VPC Access API](https://console.cloud.google.com/marketplace/product/google/vpcaccess.googleapis.com) for your project.
 1. Go to <https://console.cloud.google.com/networking/connectors/list> and select `Create Connector`.
@@ -163,7 +171,7 @@ Google Cloud Datastore provides [managed export/import](https://cloud.google.com
 
 ### Backup
 
-The backup has been configured to run weekly in the system by setting `app.enable.datastore.backup=true` in `src/main/resources/build.properties`.
+The backup has been configured to run monthly in the system by setting `app.enable.datastore.backup=true` in `src/main/resources/build.properties`.
 However, a few prerequisites as described [here](https://cloud.google.com/datastore/docs/schedule-export#before_you_begin) need to be done first.
 
 If you wish to do backup outside the scheduled period, you can simply trigger the backup cron job manually from the GCP console.

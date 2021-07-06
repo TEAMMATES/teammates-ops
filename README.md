@@ -14,7 +14,7 @@ This is the maintenance web site for TEAMMATES. It consists of documentations an
 
 Here are the tools used for TEAMMATES development/operations:
 
-* [Google App Engine Java, Standard Environment](https://cloud.google.com/appengine/docs/standard/java/) as the underlying framework and platform. Additionally, we use the following GCP services:
+* [Google App Engine Java, Standard Environment](https://cloud.google.com/appengine/docs/standard/java/) or [Google App Engine, Flexible Environment](https://cloud.google.com/appengine/docs/flexible/custom-runtimes/) as the underlying platform. Additionally, we use the following GCP services:
   * [Google Cloud Datastore](https://cloud.google.com/datastore/) as the database
   * [Google Cloud Storage](https://cloud.google.com/storage) as the binary file storage
   * [Google Cloud Tasks](https://cloud.google.com/tasks/) as the background task scheduler
