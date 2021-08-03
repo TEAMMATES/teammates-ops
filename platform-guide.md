@@ -111,7 +111,7 @@ The steps to create the Solr instance are as follows:
    - All other settings can remain as per default.
 1. Click `Create` and wait until the VM is booted. Note down the internal IP address.
 1. SSH into the VM.
-1. Run all the commands inside [the setup file](scripts/solr-setup.sh), in order.
+1. Run all the commands inside [the setup file](scripts/solr-setup.sh) followed by [the configuration file](https://github.com/TEAMMATES/teammates/blob/master/solr/solr.sh), in order.
    - While doing the above, note down your username inside the VM and the directory in which Solr is installed.
    - The next step will assume username of `john` and Solr installation directory of `/home/john/solr-8.8.1`.
 1. Add the following custom metadata to the VM:
