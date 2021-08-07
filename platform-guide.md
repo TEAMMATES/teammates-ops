@@ -18,6 +18,8 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
 
 Note: This document does not have preference over either GAE standard or flexible environment. It is your duty to decide on the environment you will be using based on your needs.
 
+1. The deployment uses Google Cloud SDK, which requires Python 3 (recommended) or Python 2.7. Install it if you have not done so.
+
 1. Create your own project on GCP.<br>
    Suggested project identifier: `teammates-yourname` (e.g `teammates-john`).<br>
    The eventual URL of the app will be like this: `https://teammates-john.appspot.com`.<br>
@@ -56,7 +58,7 @@ Note: This document does not have preference over either GAE standard or flexibl
      ./gradlew appengineDeployAll -Pflex
      ```
    * Wait until you see all the following messages or similar on the console:
-     * `Deployed service [default] to [https://7-0-0-dot-teammates-john.appspot.com]`
+     * `Deployed service [default] to [https://8-0-0-dot-teammates-john.appspot.com]`
      * `Cron jobs have been updated.`
      * `Indexes are being rebuilt. This may take a moment.`
      * `Task queues have been updated.`
@@ -71,7 +73,7 @@ Note: This document does not have preference over either GAE standard or flexibl
    * Click `Versions` on the left bar.
    * Tick the checkbox next to the deployed version and select `Migrate Traffic`. Wait for a few minutes.
    * If you do not wish to set the deployed version as the default, you can access the deployed app using
-     `https://{version}-dot-teammates-john.appspot.com`, e.g `https://7-0-0-dot-teammates-john.appspot.com`.
+     `https://{version}-dot-teammates-john.appspot.com`, e.g `https://8-0-0-dot-teammates-john.appspot.com`.
 
 ## Setting up OAuth 2.0 Client
 
@@ -85,7 +87,7 @@ You need to set up an OAuth 2.0 client in order to support user authentication i
    * If you want to test this in your dev server, you also need to add `http://localhost:8080/oauth2callback`.
 1. Click `Create`. You will be shown the client ID and client secret; save both information for later.
 
-Note that the redirect URIs are exact and only work for the URIs specified, without wildcards, version number specifier, etc. If you want to allow redirect for specific version (e.g. `https://7-0-0-dot-teammates-john.appspot.com`), you need to add the entry `https://7-0-0-dot-teammates-john.appspot.com/oauth2callback` to the list of URIs.
+Note that the redirect URIs are exact and only work for the URIs specified, without wildcards, version number specifier, etc. If you want to allow redirect for specific version (e.g. `https://8-0-0-dot-teammates-john.appspot.com`), you need to add the entry `https://8-0-0-dot-teammates-john.appspot.com/oauth2callback` to the list of URIs.
 
 ## Setting up Google Cloud Storage
 
@@ -104,7 +106,8 @@ The steps to create the Solr instance are as follows:
 1. Create a VM with the following configuration:
    - Name: any name of your choice
    - Region, zone: the region of your GAE application
-   - Machine configuration: as necessary. To get the cheapest possible machine, select `General Purpose > N1 > f1-micro`
+   - Machine configuration: as necessary. To get the cheapest possible machine, select `General Purpose > N1 > g1-small`.
+     - There are cheaper machine types such as `f1-micro`, however they do not have the amount of memory required for Solr to run. `g1-small` is the cheapest possible machine type that is able to comfortably run Solr.
    - Boot disk: as necessary. To get the cheapest possible disk, use 10 GB `Standard persistent disk`.
      - Note that the instruction will assume that the OS used is `Debian`.
    - Firewall: Disallow both HTTP and HTTPS traffic
