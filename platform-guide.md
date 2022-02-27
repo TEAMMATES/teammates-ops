@@ -83,11 +83,11 @@ You need to set up an OAuth 2.0 client in order to support user authentication i
 1. Click `Create credentials` and then select `OAuth client ID`.
 1. Choose `Web Application` and give the client a name (the exact name does not matter).
 1. Under `Authorised redirect URIs`, add the following URLs:
-   * Your app URL + `/oauth2callback`, e.g. `https://teammates-john.appspot.com/oauth2callback`.
-   * If you want to test this in your dev server, you also need to add `http://localhost:8080/oauth2callback`.
+   * Your app URL + `/oauth2callback?ngsw-bypass=true`, e.g. `https://teammates-john.appspot.com/oauth2callback?ngsw-bypass=true`.
+   * If you want to test this in your dev server, you also need to add `http://localhost:8080/oauth2callback?ngsw-bypass=true`.
 1. Click `Create`. You will be shown the client ID and client secret; save both information for later.
 
-Note that the redirect URIs are exact and only work for the URIs specified, without wildcards, version number specifier, etc. If you want to allow redirect for specific version (e.g. `https://8-0-0-dot-teammates-john.appspot.com`), you need to add the entry `https://8-0-0-dot-teammates-john.appspot.com/oauth2callback` to the list of URIs.
+Note that the redirect URIs are exact and only work for the URIs specified, without wildcards, version number specifier, etc. If you want to allow redirect for specific version (e.g. `https://8-0-0-dot-teammates-john.appspot.com`), you need to add the entry `https://8-0-0-dot-teammates-john.appspot.com/oauth2callback?ngsw-bypass=true` to the list of URIs.
 
 ## Setting up Google Cloud Storage
 
@@ -116,13 +116,13 @@ The steps to create the Solr instance are as follows:
 1. SSH into the VM.
 1. Run all the commands inside [the setup file](scripts/solr-setup.sh) followed by [the configuration file](https://github.com/TEAMMATES/teammates/blob/master/solr/solr.sh), in order.
    - While doing the above, note down your username inside the VM and the directory in which Solr is installed.
-   - The next step will assume username of `john` and Solr installation directory of `/home/john/solr-8.8.1`.
+   - The next step will assume username of `john` and Solr installation directory of `/home/john/solr-8.11.1`.
 1. Add the following custom metadata to the VM:
    - Key: `startup-script`
    - Value:
      ```sh
      #! /bin/bash
-     sudo -u john /home/john/solr-8.8.1/bin/solr start
+     sudo -u john /home/john/solr-8.11.1/bin/solr start
      ```
 1. Stop and restart the VM.
 1. In `build.properties`, set the value of `app.search.service.host` to the internal IP address plus the port number (should be `8983` unless you specifically use other port) plus `/solr`, e.g. `http://10.128.0.1:8983/solr`.
