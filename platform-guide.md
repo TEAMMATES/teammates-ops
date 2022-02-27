@@ -21,9 +21,8 @@ Note: This document does not have preference over either GAE standard or flexibl
 1. The deployment uses Google Cloud SDK, which requires Python 3 (recommended) or Python 2.7. Install it if you have not done so.
 
 1. Create your own project on GCP.<br>
-   Suggested project identifier: `teammates-yourname` (e.g `teammates-john`).<br>
-   The eventual URL of the app will be like this: `https://teammates-john.appspot.com`.<br>
-   Subsequent instructions will assume that the project identifier is `teammates-john`.
+   This instruction will use `teammates-john` as the project identifier.<br>
+   The eventual URL of the app will be like this: `https://teammates-john.appspot.com`.
 
 1. Enable the following APIs in your project:
    - [Cloud Tasks API](https://console.cloud.google.com/apis/library/cloudtasks.googleapis.com)
@@ -46,6 +45,10 @@ Note: This document does not have preference over either GAE standard or flexibl
 
 1. Ensure that the front-end files have been built.
    * You can refer to the TEAMMATES [developer documentation](https://github.com/TEAMMATES/teammates/blob/master/docs/development.md#building-front-end-files) on building front-end files.
+
+1. (Optional but recommended) If you are deploying the application only for testing purpose, it is highly recommended to not deploy the cron jobs as they will necessitate the application to have 100% uptime (thereby unnecessarily charging instance cost). You can achieve this in two different ways:
+   * Use a deployment command that does not deploy the cron job. Details can be found in the next section.
+   * Remove all cron job entries in `src/main/appengine/cron.yaml` before running the deployment command.
 
 1. Deploy the application to your staging server.
    * Run the following command:
