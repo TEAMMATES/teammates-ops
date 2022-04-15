@@ -19,7 +19,7 @@ TEAMMATES welcome any developer (especially student) to be a contributor to the 
 
 Contributors:
 * Have "pull" access to the main repository and the ops repository, and submit their fixes via pull requests (PRs) from their own forked repository.
-  The detailed workflow is given in [this document](https://github.com/TEAMMATES/teammates/blob/master/docs/process.md).
+  The detailed workflow is given in [this document](https://teammates.github.io/teammates/process.html).
 * Can open issues.
 * Can close issues and PRs opened by themselves.
 * Can comment on any issue and PR.
