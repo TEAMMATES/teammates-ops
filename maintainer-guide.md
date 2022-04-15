@@ -2,7 +2,7 @@
 
 This document details the tasks that need to be done by core team (afterwards "team") members (project maintainers) in order to keep the project moving.
 
-It is assumed that the team members are familiar with the [development workflow](https://github.com/TEAMMATES/teammates/blob/master/docs/process.md), [individual development process](https://github.com/TEAMMATES/teammates/blob/master/docs/development.md), and the terms used in the project as listed in those documents, [project glossary](https://github.com/TEAMMATES/teammates/blob/master/docs/glossary.md), [issue labels](https://github.com/TEAMMATES/teammates/blob/master/docs/issues.md), and beyond.
+It is assumed that the team members are familiar with the [development workflow](https://teammates.github.io/teammates/process.html), [individual development process](https://teammates.github.io/teammates/development.html), and the terms used in the project as listed in those documents, [project glossary](https://teammates.github.io/teammates/glossary.html), [issue labels](https://teammates.github.io/teammates/issues.html), and beyond.
 
 * Issue tracker management
   * [Triaging an issue](#triaging-an-issue)

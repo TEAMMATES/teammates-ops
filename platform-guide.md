@@ -44,7 +44,7 @@ Note: This document does not have preference over either GAE standard or flexibl
      Modify if necessary, e.g. to change the version number displayed to user. Note that this modification needs to be done before building the front-end files.
 
 1. Ensure that the front-end files have been built.
-   * You can refer to the TEAMMATES [developer documentation](https://github.com/TEAMMATES/teammates/blob/master/docs/development.md#building-front-end-files) on building front-end files.
+   * You can refer to the TEAMMATES [developer documentation](https://teammates.github.io/teammates/development.html#building-front-end-files) on building front-end files.
 
 1. (Optional but recommended) If you are deploying the application only for testing purpose, it is highly recommended to not deploy the cron jobs as they will necessitate the application to have 100% uptime (thereby unnecessarily charging instance cost). You can achieve this in two different ways:
    * Use a deployment command that does not deploy the cron job. Details can be found in the next section.
