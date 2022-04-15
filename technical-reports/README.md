@@ -3,13 +3,14 @@
 > These are the in-depth descriptions about various aspects of the project.
 > They were written to be relevant only at the point of writing, thus many of its contents may be outdated now.
 
-* [Measuring the scalability and performance of TEAMMATES](Measuring-scalability-and-performance.md) - by Samson Tan Min Rong (Apr 2017)
+* [Performance Testing in TEAMMATES](Performance-Testing.md) (April, 2019) - by Ronak Lakhotia, Amrut Prabhu and Jacob Li PengCheng
+* [Measuring the scalability and performance of TEAMMATES](Measuring-scalability-and-performance.md) (Deprecated) - by Samson Tan Min Rong (Apr 2017)
 
 The following reports were authored before 2015:
 
 * [An Analysis of Question Types](https://docs.google.com/document/d/1SH8VkaUH_kv3bT3c8AKiPDJS2Y-XhzZvNb4umavmfCE/pub?embedded=true) - by Low Weilin
-* [Measuring Scalability and Performance](https://docs.google.com/document/pub?id=1C7fn11fKsgGUx0AT_nH9ZQBi3G7o5zpYqwIIAC40CxU&embedded=true) - by James Dam Tuan Long
-* [Improving Scalability and Performance](https://docs.google.com/document/pub?id=1v_RYw_Hu1-TExVi0A7d3kxX0CTgFaUtfV1_qYXBhwWs&embedded=true) - by James Dam Tuan Long
+* [Measuring Scalability and Performance](https://docs.google.com/document/pub?id=1C7fn11fKsgGUx0AT_nH9ZQBi3G7o5zpYqwIIAC40CxU&embedded=true) (Deprecated) - by James Dam Tuan Long
+* [Improving Scalability and Performance](https://docs.google.com/document/pub?id=1v_RYw_Hu1-TExVi0A7d3kxX0CTgFaUtfV1_qYXBhwWs&embedded=true) (Deprecated) - by James Dam Tuan Long
 * [Data Backup and Disaster Recovery](https://docs.google.com/document/d/1ECDOy2JUXKLz8t44lXj2t0nvqDtJCjyHM7_HA8DV1fA/pub?embedded=true) - by Lee Shaw Wei Shawn
 * [Dealing with Eventual Consistency](https://docs.google.com/document/d/11HUDa-PlzEEk4-liWlsjC9UbicbfYO1hJMxx_cCEEVE/pub?embedded=true) - by Lee Shaw Wei Shawn
 * [Dealing with Intermittent Null Pointer Exceptions](https://docs.google.com/document/d/1A_QtW8uDFGeeu2KOiWwyuvgm7Jm9pS7nOvmy9B42v_I/pub?embedded=true) - by Lee Shaw Wei Shawn
