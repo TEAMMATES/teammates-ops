@@ -13,7 +13,7 @@ This bot is deployed on Heroku.
 
 Deployment config:
 - `GITHUB_API_TOKEN` : The bot's GitHub API access token; known only to maintainers
-- `CONTRIBUTING_GUIDELINES`: [TEAMMATES contributing guidelines](https://github.com/TEAMMATES/teammates/blob/master/docs/CONTRIBUTING.md)
+- `CONTRIBUTING_GUIDELINES`: [TEAMMATES contributing guidelines](https://teammates.github.io/teammates/contributing-doc.html)
 - `REGEX_PULL_REQ_TITLE`: Regex to validate the PR title
 - `REGEX_PULL_REQ_BODY`: Regex to validate the PR description
 
