@@ -3,7 +3,7 @@
 This document details the operations where Google Cloud Platform (GCP) is involved.
 
 * [Deploying to a staging server](#deploying-to-a-staging-server)
-* [Setting up OAuth 2.0 client](#setting-up-oauth-20-client)
+* [Setting up Firebase Authentication](#setting-up-firebase-authentication)
 * [Setting up Google Cloud Storage](#setting-up-google-cloud-storage)
 * [Setting up Solr](#setting-up-solr)
 * [Running client scripts](#running-client-scripts)
@@ -78,19 +78,36 @@ Note: This document does not have preference over either GAE standard or flexibl
    * If you do not wish to set the deployed version as the default, you can access the deployed app using
      `https://{version}-dot-teammates-john.appspot.com`, e.g `https://8-0-0-dot-teammates-john.appspot.com`.
 
-## Setting up OAuth 2.0 Client
+## Setting up Firebase Authentication
 
-You need to set up an OAuth 2.0 client in order to support user authentication in the production system.
+You need to set up Firebase Authentication in order to support user authentication in the production system.
 
-1. Go to [Google Cloud APIs & Services Credentials console](https://console.cloud.google.com/apis/credentials).
-1. Click `Create credentials` and then select `OAuth client ID`.
-1. Choose `Web Application` and give the client a name (the exact name does not matter).
-1. Under `Authorised redirect URIs`, add the following URLs:
-   * Your app URL + `/oauth2callback?ngsw-bypass=true`, e.g. `https://teammates-john.appspot.com/oauth2callback?ngsw-bypass=true`.
-   * If you want to test this in your dev server, you also need to add `http://localhost:8080/oauth2callback?ngsw-bypass=true`.
-1. Click `Create`. You will be shown the client ID and client secret; save both information for later.
-
-Note that the redirect URIs are exact and only work for the URIs specified, without wildcards, version number specifier, etc. If you want to allow redirect for specific version (e.g. `https://8-0-0-dot-teammates-john.appspot.com`), you need to add the entry `https://8-0-0-dot-teammates-john.appspot.com/oauth2callback?ngsw-bypass=true` to the list of URIs.
+1. Go to [Firebase console](https://console.firebase.google.com/).
+2. Create a Firebase project.
+    1. Click `Add project`.
+    2. Enter a project name, e.g. `teammates-john`, and click `Continue`.
+    3. Optionally, check `Enable Google Analytics for this project`, and click `Continue`.
+    4. Click `Continue` upon successful project creation.
+3. Set up Firebase Authentication.
+    1. Click on the `Authentication` tile.
+    2. Under the `Sign-in method` tab, enable the sign-in methods that TEAMMATES supports, i.e. `Google` and `Email/Password`.
+        1. Click `Google`.
+            1. Check `Enable`.
+            2. Select a project support email.
+            3. Click `Save`.
+        2. Click `Add new provider`, and click `Email/Password`.
+            1. Check `Enable` for `Email/Password`.
+            2. Check `Enable` for `Email link (passwordless sign-in)`.
+            3. Click `Save`.
+4. Register your web app with Firebase.
+    1. Click on the `Gear` icon at the sidebar, and click `Project settings`.
+    2. Under the `General` tab, in the `Your apps` section, click on the `Web` icon.
+    3. Enter an app nickname, e.g. `teammates-john`, and click `Register app`.
+    4. Copy the `firebaseConfig` and paste it into `environment.ts`.
+    5. Click `Continue to console`.
+5. Set up Firebase Service Account.
+    1. In `Project settings`, under the `Service accounts` tab, click `Generate new private key`.
+    2. Create an environment variable named `GOOGLE_APPLICATION_CREDENTIALS` and set its value to the path of the private key file generated.
 
 ## Setting up Google Cloud Storage
 
