@@ -75,6 +75,7 @@ function createReleaseNotes() {
   console.log('==================================================');
   console.log('# Release (fill this up)');
   console.log('');
+  addReleaseNoteEntries('Breaking', 'Breaking Changes');
   addReleaseNoteEntries('Bug', 'Bug Fixes');
   addReleaseNoteEntries('Feature', 'New Features and Enhancements');
   addReleaseNoteEntries('DevOps', 'DevOps/Build-related');
@@ -125,7 +126,7 @@ function listPrsAndAuthors() {
     }
     prNumberToMetadataMap[pr.number] = {
       prType,
-      authorName: usernameToNameMap[author] || author,
+      authorName: `@${author}`,
     };
   });
 
