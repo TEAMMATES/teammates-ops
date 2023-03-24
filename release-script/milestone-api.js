@@ -38,7 +38,7 @@ function getMilestoneContents(version, pageNum, callback) {
       console.log('');
       callback(version, prsInMilestone);
     } else {
-      issuesAndPrs.filter(issueOrPr => issueOrPr.pull_request).forEach(pr => prsInMilestone.push(pr));
+      issuesAndPrs.filter((issueOrPr) => issueOrPr.pull_request).forEach((pr) => prsInMilestone.push(pr));
       getMilestoneContents(version, pageNum + 1, callback);
     }
   });
