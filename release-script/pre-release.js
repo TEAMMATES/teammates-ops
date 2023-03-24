@@ -63,10 +63,10 @@ function checkUsername(username) {
 
 function updateDevelopersJson() {
   Object.keys(singleContributors)
-    .filter(username => !singleContributors[username])
-    .forEach(username => allDevs.contributors
-      .filter(obj => obj.username === username)
-      .filter(obj => !obj.major)
+    .filter((username) => !singleContributors[username])
+    .forEach((username) => allDevs.contributors
+      .filter((obj) => obj.username === username)
+      .filter((obj) => !obj.major)
       .forEach((obj) => {
         const { name: n, username: un } = obj;
         delete obj.name;
@@ -93,8 +93,8 @@ function matchPrs() {
       }
       return true;
     });
-  const prNumbersInMilestone = prsInMilestone.map(pr => pr.number);
-  const prNumbersInGitCommits = gitCommits.map(commitMsg => parseInt(commitMsgRegex.exec(commitMsg)[2], 10));
+  const prNumbersInMilestone = prsInMilestone.map((pr) => pr.number);
+  const prNumbersInGitCommits = gitCommits.map((commitMsg) => parseInt(commitMsgRegex.exec(commitMsg)[2], 10));
 
   console.log('');
   prNumbersInMilestone.forEach((pr) => {
@@ -115,7 +115,7 @@ function checkPrMetadata() {
     const prNumber = pr.number;
 
     // Check for labels: one c.* label, s.ToMerge, and nothing else
-    const labels = pr.labels.map(label => label.name);
+    const labels = pr.labels.map((label) => label.name);
     if (!labels.indexOf('s.ToMerge' === -1)) {
       console.log(`PR #${prNumber} is not labelled with s.ToMerge.`);
     }
@@ -141,9 +141,9 @@ function checkPrMetadata() {
 }
 
 function checkAndUpdateDevelopersJson() {
-  prsInMilestone.forEach(pr => checkUsername(pr.user.login));
+  prsInMilestone.forEach((pr) => checkUsername(pr.user.login));
   if (newContributors.length) {
-    Object.keys(newContributors).forEach(i => allDevs.contributors.push({ name: '', username: newContributors[i] }));
+    Object.keys(newContributors).forEach((i) => allDevs.contributors.push({ name: '', username: newContributors[i] }));
     fs.writeFile(developersJsonDir, JSON.stringify(allDevs, null, 2) + eol, 'UTF-8', () => {
       function capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);

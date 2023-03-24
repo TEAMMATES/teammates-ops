@@ -63,7 +63,7 @@ function addReleaseNoteEntries(type, displayType) {
       console.log(`## ${displayType}`);
       console.log('');
     }
-    entries.forEach(entry => console.log(`- ${entry}`));
+    entries.forEach((entry) => console.log(`- ${entry}`));
     console.log('');
   }
 }
@@ -86,8 +86,8 @@ function createReleaseNotes() {
   console.log('==================================================');
   console.log(`[${version}](https://github.com/TEAMMATES/teammates/releases/tag/${version}) has been released by @${githubUsername} at ${timeToDisplay} SGT.`);
   console.log('');
-  console.log(`Code contributions from: ${authors.map(username => `@${username}`).sort().join(', ')}`);
-  console.log(`Review contributions from: ${reviewers.map(username => `@${username}`).sort().join(', ')}`);
+  console.log(`Code contributions from: ${authors.map((username) => `@${username}`).sort().join(', ')}`);
+  console.log(`Review contributions from: ${reviewers.map((username) => `@${username}`).sort().join(', ')}`);
   console.log('');
   console.log('Ready for post-release check and deployment by PM (@damithc).');
   console.log('==================================================');
@@ -111,13 +111,13 @@ function listPrsAndAuthors() {
     if (authors.indexOf(author) === -1) {
       authors.push(author);
     }
-    pr.assignees.map(assignee => assignee.login).forEach((reviewer) => {
+    pr.assignees.map((assignee) => assignee.login).forEach((reviewer) => {
       if (reviewers.indexOf(reviewer) === -1) {
         reviewers.push(reviewer);
       }
     });
     let prType = 'Unlisted';
-    const [cLabel] = pr.labels.filter(label => label.name.startsWith('c.'));
+    const [cLabel] = pr.labels.filter((label) => label.name.startsWith('c.'));
     if (cLabel) {
       const prTypeFromLabel = cLabel.name.replace(/^c\./, '');
       if (allowedPrTypes.indexOf(prTypeFromLabel) !== -1) {
@@ -132,7 +132,7 @@ function listPrsAndAuthors() {
 
   const commitMsgRegex = /^[0-9a-f]{7,} \[#\d+] (.*) \(#(\d+)\)$/;
   shell.exec('git log --oneline release..HEAD').stdout.split(eol)
-    .filter(commitMsg => commitMsg && commitMsg.match(commitMsgRegex))
+    .filter((commitMsg) => commitMsg && commitMsg.match(commitMsgRegex))
     .forEach((commitMsg) => {
       const parts = commitMsgRegex.exec(commitMsg);
       const entry = parts[1];

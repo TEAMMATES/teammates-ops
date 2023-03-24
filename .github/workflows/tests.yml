@@ -15,14 +15,14 @@ jobs:
       run:
         working-directory: release-script
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: 16
       - name: Copy config files
         run: cp config.template.js config.js
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Run Lint Checks
         run: npm run lint
