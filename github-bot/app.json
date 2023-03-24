@@ -1,6 +1,0 @@
-{
-  "name": "TEAMMATES GitHub Bot",
-  "description": "Bot for managing GitHub interactions in TEAMMATES",
-  "repository": "https://github.com/TEAMMATES/teammates-ops",
-  "image": "heroku/nodejs"
-}
