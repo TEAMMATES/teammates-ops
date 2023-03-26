@@ -99,31 +99,31 @@ Note that the redirect URIs are exact and only work for the URIs specified, with
 ### Setting up Firebase Authentication
 
 1. Go to [Firebase console](https://console.firebase.google.com/).
-2. Create a Firebase project.
-    1. Click `Add project`.
-    2. Enter a project name, e.g. `teammates-john`, and click `Continue`.
-    3. Optionally, check `Enable Google Analytics for this project`, and click `Continue`.
-    4. Click `Continue` upon successful project creation.
-3. Set up Firebase Authentication.
-    1. Click on the `Authentication` tile.
-    2. Under the `Sign-in method` tab, enable the sign-in methods that TEAMMATES supports, i.e. `Google` and `Email/Password`.
-        1. Click `Google`.
-            1. Check `Enable`.
-            2. Select a project support email.
-            3. Click `Save`.
-        2. Click `Add new provider`, and click `Email/Password`.
-            1. Check `Enable` for `Email/Password`.
-            2. Check `Enable` for `Email link (passwordless sign-in)`.
-            3. Click `Save`.
-4. Register your web app with Firebase.
-    1. Click on the `Gear` icon at the sidebar, and click `Project settings`.
-    2. Under the `General` tab, in the `Your apps` section, click on the `Web` icon.
-    3. Enter an app nickname, e.g. `teammates-john`, and click `Register app`.
-    4. Copy the `firebaseConfig` and paste it into `environment.ts`.
-    5. Click `Continue to console`.
-5. Set up Firebase Service Account.
-    1. In `Project settings`, under the `Service accounts` tab, click `Generate new private key`.
-    2. Create an environment variable named `GOOGLE_APPLICATION_CREDENTIALS` and set its value to the path of the private key file generated.
+1. Create a Firebase project:
+   1. Click `Add project`.
+   1. Enter a project name, e.g. `teammates-john`, and click `Continue`. You can also choose to use your TEAMMATES application's project name.
+   1. Optionally, check `Enable Google Analytics for this project`, and click `Continue`.
+   1. Click `Continue` upon successful project creation.
+1. Set up Firebase Authentication:
+   1. Click on the `Authentication` tile.
+   1. Under the `Sign-in method` tab, enable the sign-in methods to be supported, e.g. `Google` and `Email/Password`.
+      1. Click `Google`.
+         1. Check `Enable`.
+         1. Select a project support email.
+         1. Click `Save`.
+      1. Click `Add new provider`, and click `Email/Password`.
+         1. Check `Enable` for `Email/Password`.
+         1. Check `Enable` for `Email link (passwordless sign-in)`.
+         1. Click `Save`.
+1. Register your web app with Firebase:
+   1. Go to `Project settings` (the gear icon at the sidebar next to `Project Overview`).
+   1. Under the `General` tab, in the `Your apps` section, click on the `Web` icon (looks like `</>`).
+   1. Enter an app nickname, e.g. `teammates-john`, and click `Register app`.
+   1. Copy the `firebaseConfig` and paste it into `environment.ts`.
+   1. Click `Continue to console`.
+1. Set up Firebase Service Account:
+   1. In `Project settings`, under the `Service accounts` tab, click `Generate new private key`.
+   1. Copy the generated file to `src/main/resources/firebase-credentials.json` in TEAMMATES.
 
 ## Setting up Google Cloud Storage
 
