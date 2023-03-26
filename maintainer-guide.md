@@ -2,7 +2,7 @@
 
 This document details the tasks that need to be done by core team (afterwards "team") members (project maintainers) in order to keep the project moving.
 
-It is assumed that the team members are familiar with the [development workflow](https://github.com/TEAMMATES/teammates/blob/master/docs/process.md), [individual development process](https://github.com/TEAMMATES/teammates/blob/master/docs/development.md), and the terms used in the project as listed in those documents, [project glossary](https://github.com/TEAMMATES/teammates/blob/master/docs/glossary.md), [issue labels](https://github.com/TEAMMATES/teammates/blob/master/docs/issues.md), and beyond.
+It is assumed that the team members are familiar with the [development workflow](https://teammates.github.io/teammates/process.html), [individual development process](https://teammates.github.io/teammates/development.html), and the terms used in the project as listed in those documents, [project glossary](https://teammates.github.io/teammates/glossary.html), [issue labels](https://teammates.github.io/teammates/issues.html), and beyond.
 
 * Issue tracker management
   * [Triaging an issue](#triaging-an-issue)
@@ -47,7 +47,7 @@ A new issue needs to be triaged by a team member. Here is the process:
    * For messages directed to the team, add the label `c.Message`, and post a comment if you can respond or know someone who can. If the message is about help requests, add the label `a-DevHelp` as well.
    * For other types of issues, add the category labels as appropriate.
      * Issues marked as `c.Message` and `c.Release` are exempted from all other labels.
-     * If an issue is at priority `p.High` or higher, labels `d.FirstTimers` and `d.Contributors` cannot be applied to it.
+     * If an issue is at priority `p.High` or higher, labels `good first issue` and `help wanted` cannot be applied to it.
 
 ### Closing an issue
 
@@ -72,7 +72,7 @@ In any case, leave a comment to explain why the issue is closed without resoluti
 A PR can be closed without merging if:
 * The PR addresses something that has been fixed.
 * The PR addresses something that needs not be fixed.
-* The PR addresses an issue labelled `d.FirstTimers` and is authored by a contributor who has committed code to the main repository before.
+* The PR addresses an issue labelled `good first issue` and is authored by a contributor who has committed code to the main repository before.
 * The author does not address the review comments after **7 days**.
 * The author is not acting in the project's best interest, e.g. resisting review comments, not following project guidelines.
 
@@ -106,7 +106,7 @@ New releases are made every set period of time (typically every week), in which 
   * Update the "about page" with the names of new contributors, if any.
 * Release day:
   * Ensure all PRs included in the release are tagged with the correct milestone, correct assignee(s), and appropriate `c.*` label.
-  * Merge `release` branch with `master` branch and tag the release with format `V{major}.{minor}.0` (e.g. `V6.0.0`).
+  * Merge `release` branch with `master` branch and tag the release with format `V{major}.{minor}.0` (e.g. `V8.0.0`).
   * Close the current milestone and create a new milestone for the next + 1 release.
   * Announce the release via GitHub release feature as well as the release issue in the issue tracker. Be sure to credit all who contributed to the release in one way or another.
   * Assign PM to the "Release" issue.
@@ -127,11 +127,11 @@ New releases are made every set period of time (typically every week), in which 
 ## Making a hot patch
 
 Hot patches are releases containing fix for critical issues that severely affect the application's functionality.
-It is released on a necessity basis, typically few days after latest release.
+It is released on a necessity basis, typically no more than a few days after latest release.
 
 **Role: RL**
 
-* Tag the release with format `V{major}.{minor}.{patch}` (e.g. `V6.0.1`).
+* Tag the release with format `V{major}.{minor}.{patch}` (e.g. `V8.0.1`).
 * Close the milestone for the patch release and announce via GitHub release feature only. Be sure to credit all who contributed in one way or another.
 * Inform PM the hot patch is ready for deployment.
 * After the last hot patch of the proper release, merge the `release` branch back to the current `master` branch.
@@ -139,6 +139,9 @@ It is released on a necessity basis, typically few days after latest release.
 **Role: PM**
 
 The PM's actions are the same as when [making a release](#making-a-release), minus the "Closing the release issue" part.
+
+> Note: sometimes, a hot patch is added on top of the `master` branch (i.e. the `master` branch is still clean since the latest proper release).
+> In that case, it is also appropriate to follow the standard release procedure for the hot patch.
 
 ## Other tasks
 
@@ -192,13 +195,17 @@ The timezone databases `moment-timezone-with-data.min.js` for the front-end and 
 
 To update the front-end timezone database:
 
-1. Setup [moment-timezone](https://github.com/moment/moment-timezone) project locally with their [developer guide](https://github.com/moment/moment-timezone/blob/develop/contributing.md#contributing).
-1. Use `grunt data` to build the project with the latest IANA timezone data.
-1. Copy `data/packed/latest.json` and override `src/web/data/timezone.json` in TEAMMATES. You may need to modify the file slightly e.g. to fix coding style.
+1. We use the JSON file from the [moment-timezone](https://github.com/moment/moment-timezone) project. There are two possible scenarios here: either the desired timezone data has been generated or not.
+   1. If it has been generated, the generated file can be used directly.
+   1. If it has not been generated:
+      1. Setup the project locally with the help of their [developer guide](https://github.com/moment/moment-timezone/blob/develop/contributing.md#contributing).
+      1. Use `grunt data` to build the project with the latest IANA timezone data.
+      1. The result file can be found in `data/packed/latest.json`.
+1. Copy the relevant file and override `src/web/data/timezone.json` in TEAMMATES. You may need to modify the file slightly e.g. to fix coding style.
 
 To update the back-end timezone database:
 
-1. Follow the instructions on [`tzupdater`](http://www.oracle.com/technetwork/java/javase/tzupdater-readme-136440.html) to update the timezone database in the local JRE.
+1. Follow the instructions on [`tzupdater`](https://www.oracle.com/java/technologies/javase/tzupdater-readme.html) to update the timezone database in the local JRE.
 1. Copy the updated `$JAVA_HOME/jre/lib/tzdb.dat` and override the `tzdb.dat` in the project.
 
 To check the updates are successful, run `TimezoneSyncerTest.java`.
@@ -233,23 +240,22 @@ For the usage of such a branch, the following practices should be observed:
 To welcome a new committer:
 
 * Add the GitHub user to the `Committers` team.
-* Add the committer's name and photo to the "about page".
 
 Subsequent promotions are done by moving the member's name to the appropriate section in the "about page".
 
 To welcome a new project lead:
 
 * Add the GitHub user to the `Team-leads` team.
-* Set the GitHub user to have the "Owner" role for the TEAMMATES organization.
 
 When someone's tenure as committer or team member has passed:
 
 * Do NOT revoke the team membership, unless voluntarily done by the past member him/herself.
+  * For project leads, remove him/her from the `Team-leads` team to ensure that the elevated access is not present for longer than necessary.
 * Move the past member's name to the appropriate section in the "about page".
 
 ### Beginner-level issues
 
-Ensure that there is a healthy supply of `d.FirstTimers`-labelled issues and `d.Contributors`-labelled issues to last for at least **7 days** considering the activity level at that point of time.
+Ensure that there is a healthy supply of `good first issue`-labelled issues and `help wanted`-labelled issues to last for at least **7 days** considering the activity level at that point of time.
 
 Possible source for such issues:
 
