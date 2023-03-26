@@ -6,7 +6,6 @@ This document describes the organization structure of the TEAMMATES developers c
 * [Committer](#committer)
 * [Core team member](#core-team-member)
   * [Snr Developer](#snr-developer)
-  * [Area Lead](#area-lead)
   * [Project Lead](#project-lead)
   * [Project Mentor](#project-mentor)
 
@@ -25,6 +24,7 @@ Contributors:
 * Can comment on any issue and PR.
 
 Contributors who have shown contributions sustained over a long period of time will be duly recognized as **major contributors**, and will be invited to join the TEAMMATES organization. Major contributors:
+* Have "triage" access to the main repository.
 * Can be assigned or assign themselves to issues.
 * Can label and close any issue as they see fit.
 * Can label PRs opened by themselves.
@@ -51,11 +51,12 @@ They are expected to be familiar with the development workflow.
 On top of committer's privileges, core team members:
 * Can label and close any PR as they see fit.
 * Can merge approved PRs reviewed by themselves.
+* Have access to maintainer's features in the live server.
 
 Core team members are expected to:
-* Contribute (i.e. pledge at least one issue) to almost every release cycle, thereby helping to maintain the project velocity.
-  They are also strongly encouraged to pick at least one high priority issue for each release cycle.
-* Respond to community members trying to reach the project team members, e.g. requesting for help.
+* Maintain the project velocity:
+  * Continue to contribute to the code base themselves or guide more junior members in their attempts to handle issues.
+  * Respond to community members trying to reach the project team members, e.g. requesting for help.
 * Cover all of [maintainer's duties](maintainer-guide.md).
 
 Core team members can progress through various ranks, with different duties involved in those ranks.
@@ -66,18 +67,6 @@ Core team members can progress through various ranks, with different duties invo
 
 Snr developers are the most junior members of the core team.
 They do not have additional duties other than that common to all core team members.
-
-### Area Lead
-
-Area leads are team members in charge of particular aspects of the project.
-
-Area leads have the following duties:
-* Act as the first point of contact for an issue requiring triage or a PR requiring review, if the issue falls in their portfolio (as determined by the issue labels).
-* Perform maintenance tasks regularly in their portfolio area. For example:
-  * For feature-related areas: fixing bugs, testing for correctness and performance, paying off code-related technical debts.
-  * For DevOps: researching new development tools or alternative workflow to be adopted, updating third-party dependencies.
-    * In addition, the area lead for DevOps will have a "push" access to the ops repository.
-  * For documentation: making sure they are updated and relevant.
 
 ### Project Lead
 
