@@ -115,6 +115,7 @@ Note that the redirect URIs are exact and only work for the URIs specified, with
          1. Check `Enable` for `Email/Password`.
          1. Check `Enable` for `Email link (passwordless sign-in)`.
          1. Click `Save`.
+   1. Under the `Settings` tab, add your application domain (e.g. `teammates-john.appspot.com`) in the list of `Authorised domains`.
 1. Register your web app with Firebase:
    1. Go to `Project settings` (the gear icon at the sidebar next to `Project Overview`).
    1. Under the `General` tab, in the `Your apps` section, click on the `Web` icon (looks like `</>`).
