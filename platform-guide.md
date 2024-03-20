@@ -7,6 +7,8 @@ This document details the operations where Google Cloud Platform (GCP) is involv
   * [Setting up OAuth 2.0 client](#setting-up-oauth-20-client)
   * [Setting up Firebase Authentication](#setting-up-firebase-authentication)
 * [Setting up Google Cloud Storage](#setting-up-google-cloud-storage)
+* [Setting up Google Cloud SQL](#setting-up-google-cloud-sql)
+* [Setting up Google VPC](#setting-up-google-vpc)
 * [Setting up Solr](#setting-up-solr)
 * [Running client scripts](#running-client-scripts)
 * [Setting up Gmail API credentials](#setting-up-gmail-api-credentials)
@@ -20,7 +22,7 @@ The instructions in all parts of this document work for Linux, OS X, and Windows
 
 Note: This document does not have preference over either GAE standard or flexible environment. It is your duty to decide on the environment you will be using based on your needs.
 
-1. The deployment uses Google Cloud SDK, which requires Python 3 (recommended) or Python 2.7. Install it if you have not done so.
+1. The deployment uses [Google Cloud SDK](https://cloud.google.com/sdk/docs/install), which requires Python 3 (recommended) or Python 2.7. Install it if you have not done so.
 
 1. Create your own project on GCP.<br>
    This instruction will use `teammates-john` as the project identifier.<br>
@@ -29,7 +31,8 @@ Note: This document does not have preference over either GAE standard or flexibl
 1. Enable the following APIs in your project:
    - [Cloud Tasks API](https://console.cloud.google.com/apis/library/cloudtasks.googleapis.com)
    - [Cloud Scheduler API](https://console.cloud.google.com/apis/library/cloudscheduler.googleapis.com)
-   - [Cloud Debugger API](https://console.cloud.google.com/apis/library/clouddebugger.googleapis.com)
+
+1. Create the [SQL instance on GCP](#setting-up-google-cloud-sql), and enable `Private IP`.
 
 1. [Authorize your Google account to be used by the Google Cloud SDK](https://cloud.google.com/sdk/docs/authorizing) if you have not done so.
    ```sh
@@ -38,12 +41,16 @@ Note: This document does not have preference over either GAE standard or flexibl
    Follow the steps until you see `You are now logged in as [...]` on the console.
 
 1. Modify configuration files.
-   * `src/main/resources/build.properties`<br>
-     Edit the file as instructed in its comments. In particular, modify the app ID field to match the ID of your own project and the OAuth 2.0 client ID used for authentication.
-   * `src/main/appengine/app.yaml`<br>
-     Modify if necessary, e.g. to change App Engine instance type (standard env), to set static resources cache expiration time (standard env), to set required CPU/memory resources (flexible env), to configure liveness check (flexible env), or to set automatic scaling policies.
-   * `src/web/environments/config.ts`<br>
-     Modify if necessary, e.g. to change the version number displayed to user. Note that this modification needs to be done before building the front-end files.
+   1. `src/main/resources/build.properties`<br>
+   Edit the file as instructed in its comments. In particular:
+      * Modify the app ID field to match the ID of your own project 
+      * Modify the Postgres Host (`Private IP`) and Password
+      * Modify if necessary, [OAuth 2.0 client ID used for authentication](#setting-up-oauth-20-client).
+   1. `src/main/appengine/app.yaml`<br>
+      * Modify the `vpc_access_connector` field to specify your project's VPC connector.
+      * Modify if necessary, e.g. to change App Engine instance type (standard env), to set static resources cache expiration time (standard env), to set required CPU/memory resources (flexible env), to configure liveness check (flexible env), or to set automatic scaling policies.
+   1. `src/web/environments/config.ts`<br>
+      * Modify if necessary, e.g. to change the version number displayed to user. Note that this modification needs to be done before building the front-end files.
 
 1. Ensure that the front-end files have been built.
    * You can refer to the TEAMMATES [developer documentation](https://teammates.github.io/teammates/development.html#building-front-end-files) on building front-end files.
@@ -56,6 +63,9 @@ Note: This document does not have preference over either GAE standard or flexibl
    * Run the following command:
 
      ```sh
+     # Creates the application on GCP
+     gcloud app create
+
      # Deploy to standard env
      ./gradlew appengineDeployAll
 
@@ -92,9 +102,9 @@ Two forms of authentication are supported: Google OAuth 2.0 and Firebase. You ar
 1. Under `Authorised redirect URIs`, add the following URLs:
    * Your app URL + `/oauth2callback?ngsw-bypass=true`, e.g. `https://teammates-john.appspot.com/oauth2callback?ngsw-bypass=true`.
    * If you want to test this in your dev server, you also need to add `http://localhost:8080/oauth2callback?ngsw-bypass=true`.
+   * Note that the redirect URIs are exact and only work for the URIs specified, without wildcards, version number specifier, etc. If you want to allow redirect for specific version (e.g. `https://8-0-0-dot-teammates-john.appspot.com`), you need to add the entry `https://8-0-0-dot-teammates-john.appspot.com/oauth2callback?ngsw-bypass=true` to the list of URIs.
 1. Click `Create`. You will be shown the client ID and client secret; save both information for later.
 
-Note that the redirect URIs are exact and only work for the URIs specified, without wildcards, version number specifier, etc. If you want to allow redirect for specific version (e.g. `https://8-0-0-dot-teammates-john.appspot.com`), you need to add the entry `https://8-0-0-dot-teammates-john.appspot.com/oauth2callback?ngsw-bypass=true` to the list of URIs.
 
 ### Setting up Firebase Authentication
 
@@ -126,11 +136,73 @@ Note that the redirect URIs are exact and only work for the URIs specified, with
    1. In `Project settings`, under the `Service accounts` tab, click `Generate new private key`.
    1. Copy the generated file to `src/main/resources/firebase-credentials.json` in TEAMMATES.
 
+## Setting up Google Cloud SQL
+
+Beginning with V9, Cloud SQL is the main database that is being used.
+
+To create the SQL instance:
+
+1. Go to <https://console.cloud.google.com/sql/instances> and enable the `Compute Engine API` if prompted.
+1. Create an instance, and choose `PostgreSQL`, with the following configurations:
+   1. Instance ID: any name of your choice
+   1. Password: any password of your choice
+   1. Cloud SQL Edition: `Enterprise`, as staging will not require `Enterprise Plus` features.
+   1. (Optional but recommended) Preset for Edition: `Sandbox`, to save on hosting costs.
+   1. Region: the region of your GAE application.
+   1. (Optional but recommended): Click `Show Configuration Options` and configure the smallest machine to save on hosting costs.
+1. Click `Save` to create the instance.
+
+To connect the SQL instance with the staging or production environment, we will need to set-up private IP:
+
+1. Select your instance, and click `Connections` on the left-side bar.
+1. Click the `Networking` tab, and enable `Private IP`.
+1. Select the `(default)` VPC Network, and click `Set Up Connection`:
+   1. Enable the `Serverless VPC Access API`
+   1. Under `Allocate an IP range`, click `Use an automatically allocated IP range`.
+   1. Click `Continue` and `Create Connection`
+1. Continue to connect the staging or production environment to the VPC in the [setting up Google VPC section](#setting-up-google-vpc)
+
+(Optional) To connect your favorite database tool to query the staging environment's SQL database:
+
+1. Select your instance, and click `Connections` on the left-side bar.
+1. Click the `Networking` tab, and make sure `Public IP` is enabled. 
+1. Add your own public IP under `Authorized networks` to whitelist your IP.
+1. Click `Save` on the bottom of the page.
+1. Create a connection on your database tool:
+   1. `Host` being the SQL instance's `Public IP`.
+   1. `Database` should be default `postgres`
+   1. `Port` should be default `5432`
+   1. `Username` should be default `postgres`
+   1. `Password` should your password that you've set when creating the SQL instance.
+
+
 ## Setting up Google Cloud Storage
 
 Some features that require blob/binary data storage (as opposed to structured data storage), such as profile pictures, use Google Cloud Storage.
 
 By default, when you create a Google App Engine instance, you will get a bucket named `{your-app-id}.appspot.com`. If you do not wish to use this default bucket, you are free to [create other buckets](https://cloud.google.com/storage/docs/creating-buckets).
+
+## Setting up Google VPC Connector
+
+[Serverless VPC access](https://cloud.google.com/vpc/docs/serverless-vpc-access) allows our different services to communicate via internal private IP address, instead of public IP addressing. By default, you should already have a VPC network created called (default).
+
+Serverless VPC access requires connectors to be created and configured:
+
+1. Enable [Serverless VPC Access API](https://console.cloud.google.com/marketplace/product/google/vpcaccess.googleapis.com) for your project.
+1. Go to <https://console.cloud.google.com/networking/connectors/list> and select `Create Connector`.
+1. Create a connector with the following configuration:
+   - Name: any name of your choice
+   - Region: the region of your GAE application
+   - Network: `default` (this should be the default created VPC created automatically)
+   - Subnet: `Custom IP range`
+   - IP range: `10.8.0.0`
+   - All other settings can be modified as necessary.
+1. In `app.yaml`, add the following lines:
+   ```yml
+   vpc_access_connector:
+     name: projects/{projectId}/locations/{projectRegion}/connectors/{name}
+   ```
+1. If needed, re-deploy the application after the above change.
 
 ## Setting up Solr
 
@@ -168,22 +240,7 @@ After the above operation, you will have a running VM with a Solr instance runni
 
 Note: If you are deploying to GAE flexible environment, this step is not required and can be skipped.
 
-To fix that, you need to build a VPC connector. The steps to create the VPC connector are as follows:
-1. Enable [Serverless VPC Access API](https://console.cloud.google.com/marketplace/product/google/vpcaccess.googleapis.com) for your project.
-1. Go to <https://console.cloud.google.com/networking/connectors/list> and select `Create Connector`.
-1. Create a connector with the following configuration:
-   - Name: any name of your choice
-   - Region: the region of your GAE application
-   - Network: `default` (this should be the network whereby the VM previously created is located in)
-   - Subnet: `Custom IP range`
-   - IP range: `10.8.0.0`
-   - All other settings can be modified as necessary.
-1. In `app.yaml`, add the following lines:
-   ```yml
-   vpc_access_connector:
-     name: projects/{projectId}/locations/{projectRegion}/connectors/{name}
-   ```
-1. Re-deploy the application after the above change. It should now be able to connect to the VMs within the region.
+To fix that, you need to build a VPC connector. The steps to create the VPC connector can be found at the [VPC section](#setting-up-google-vpc)
 
 ## Running client scripts
 
