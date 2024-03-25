@@ -175,6 +175,28 @@ To connect the SQL instance with the staging or production environment, we will 
    1. `Username` should be default `postgres`
    1. `Password` should your password that you've set when creating the SQL instance.
 
+(Optional, but highly recommended for production) Create a lower-privileged user to be used for the application.
+The default 'postgres' user has [all privileges turned on](https://www.postgresql.org/docs/15/ddl-priv.html). We should create a 'production_user' with only CRUD abilities for production.
+
+1. On your database tool, connect to your SQL instance.
+2. Replace the password with your preferred password. In the following code, we will assume that the user created is called 'production_user'. Run the following script:
+```sql
+-- Creates the user
+CREATE USER production_user WITH
+	PASSWORD 'password'
+	NOCREATEDB;
+
+-- Grants CRUD for all existing tables 
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO production_user;
+
+-- Grants CRUD for all future tables
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO production_user;
+```
+
+3. To verify that the user has successfully been granted privileges, we can run the following too.
+```sql
+SELECT * from information_schema.role_table_grants where grantee='production_user';
+```
 
 ## Setting up Google Cloud Storage
 
