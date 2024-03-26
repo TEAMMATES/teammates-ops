@@ -6,7 +6,6 @@ This document details the operations where Google Cloud Platform (GCP) is involv
 * [Setting up Authentication](#setting-up-authentication)
   * [Setting up OAuth 2.0 client](#setting-up-oauth-20-client)
   * [Setting up Firebase Authentication](#setting-up-firebase-authentication)
-* [Setting up Google Cloud Storage](#setting-up-google-cloud-storage)
 * [Setting up Google Cloud SQL](#setting-up-google-cloud-sql)
 * [Setting up Google VPC](#setting-up-google-vpc)
 * [Setting up Solr](#setting-up-solr)
@@ -197,12 +196,6 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE O
 ```sql
 SELECT * from information_schema.role_table_grants where grantee='production_user';
 ```
-
-## Setting up Google Cloud Storage
-
-Some features that require blob/binary data storage (as opposed to structured data storage), such as profile pictures, use Google Cloud Storage.
-
-By default, when you create a Google App Engine instance, you will get a bucket named `{your-app-id}.appspot.com`. If you do not wish to use this default bucket, you are free to [create other buckets](https://cloud.google.com/storage/docs/creating-buckets).
 
 ## Setting up Google VPC Connector
 
