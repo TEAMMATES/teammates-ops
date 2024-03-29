@@ -137,7 +137,7 @@ Two forms of authentication are supported: Google OAuth 2.0 and Firebase. You ar
 
 ## Setting up Google Cloud SQL
 
-Beginning with V9, Cloud SQL is the main database that is being used.
+TEAMMATES uses PostgreSQL as the database. If you are going to use Google Cloud SQL as the database provider, follow this section to create the necessary infrastructure.
 
 To create the SQL instance:
 
@@ -145,57 +145,48 @@ To create the SQL instance:
 1. Create an instance, and choose `PostgreSQL`, with the following configurations:
    1. Instance ID: any name of your choice
    1. Password: any password of your choice
-   1. Cloud SQL Edition: `Enterprise`, as staging will not require `Enterprise Plus` features.
-   1. (Optional but recommended) Preset for Edition: `Sandbox`, to save on hosting costs.
-   1. Region: the region of your GAE application.
-   1. (Optional but recommended): Click `Show Configuration Options` and configure the smallest machine to save on hosting costs.
-1. Click `Save` to create the instance.
+   1. Region: the region of your GAE application
+   1. Cloud SQL Edition: as necessary; use `Enterprise` to get the cheaper default options
+      1. Additionally, select `Sandbox` as the preset
+   1. Tune these settings as necessary, balancing between business requirement and running cost:
+      1. Zonal availability
+      1. Machine configuration
+      1. Storage
+   1. Under `Connections`, select either `Private IP` or `Public IP` as needed. For best security practice, it is highly recommended to enable `Private IP` and only enable `Public IP` when needed.
+      1. If `Private IP` is selected, it will prompt to select a VPC network to create the necessary connection. Using the `(default)` will do.
+         1. Enable the `Serverless VPC Access API` if prompted.
+         1. Under `Allocate an IP range`, select `Use an automatically allocated IP range`.
+         1. Click `Continue` and `Create Connection`.
+      1. If `Public IP` is selected, no further configuration is needed. However, it is highly recommended to limit the access only to necessary IPs. You can do so by adding those IPs under `Authorized networks`.
+         1. Public IP will also allow you to use your preferred database client to connect to this Cloud SQL instance, given you have correctly whitelisted your IP address.
+         1. You can (re-)activate and de-activate Public IP access at any time after the instance creation.
+   1. All other settings can remain as per default.
+1. Click `Save` to create the instance. After it is finished, note down its private and/or public IP address.
+   1. If you deploy your system to GAE standard environment and wish for the system to connect to the database via private IP, you need to build a VPC connector. The steps to create the VPC connector can be found at the [VPC section](#setting-up-google-cloud-vpc-connector).
 
-To connect the SQL instance with the staging or production environment, we will need to set-up private IP:
+Next, we need to create the user to connect to the database instance. It is imperative from security perspective to provision a user with only the necessary data-related functions (`INSERT`, `SELECT`, `UPDATE`, `DELETE`) to access the database.
 
-1. Select your instance, and click `Connections` on the left-side bar.
-1. Click the `Networking` tab, and enable `Private IP`.
-1. Select the `(default)` VPC Network, and click `Set Up Connection`:
-   1. Enable the `Serverless VPC Access API`
-   1. Under `Allocate an IP range`, click `Use an automatically allocated IP range`.
-   1. Click `Continue` and `Create Connection`
-1. Continue to connect the staging or production environment to the VPC in the [VPC section](#setting-up-google-cloud-vpc-connector)
+1. Connect to the SQL instance. There are a few ways to do this, the easiest of which is exposing a public IP for your Cloud SQL instance and connecting to it via a database client.
+1. Run the following script, replacing `production_user` and `password` with the relevant username and password:
 
-(Optional) To connect your favorite database tool to query the staging environment's SQL database:
+   ```sql
+   -- Creates the user
+   CREATE USER production_user WITH PASSWORD 'password' NOCREATEDB;
 
-1. Select your instance, and click `Connections` on the left-side bar.
-1. Click the `Networking` tab, and make sure `Public IP` is enabled. 
-1. Add your own public IP under `Authorized networks` to whitelist your IP.
-1. Click `Save` on the bottom of the page.
-1. Create a connection on your database tool:
-   1. `Host` being the SQL instance's `Public IP`.
-   1. `Database` should be default `postgres`
-   1. `Port` should be default `5432`
-   1. `Username` should be default `postgres`
-   1. `Password` should your password that you've set when creating the SQL instance.
+   -- Grants CRUD for all existing tables 
+   GRANT INSERT, SELECT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO production_user;
 
-(Optional, but highly recommended for production) Create a lower-privileged user to be used for the application.
-The default 'postgres' user has [all privileges turned on](https://www.postgresql.org/docs/15/ddl-priv.html). We should create a 'production_user' with only CRUD abilities for production.
+   -- Grants CRUD for all future tables
+   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT INSERT, SELECT, UPDATE, DELETE ON TABLES TO production_user;
+   ```
 
-1. On your database tool, connect to your SQL instance.
-2. Replace the password with your preferred password. In the following code, we will assume that the user created is called 'production_user'. Run the following script:
-```sql
--- Creates the user
-CREATE USER production_user WITH
-	PASSWORD 'password'
-	NOCREATEDB;
+1. (Optional) Verify that the user has been successfully granted privileges by running the following command:
 
--- Grants CRUD for all existing tables 
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO production_user;
+   ```sql
+   SELECT * FROM information_schema.role_table_grants WHERE grantee = 'production_user';
+   ```
 
--- Grants CRUD for all future tables
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO production_user;
-```
-
-3. To verify that the user has successfully been granted privileges, we can run the following too.
-```sql
-SELECT * from information_schema.role_table_grants where grantee='production_user';
-```
+1. In `build.properties`, set the values of all fields named `app.postgres.*` as necessary.
 
 ## Setting up Solr in Google Compute Engine
 
@@ -278,6 +269,8 @@ You may need Gmail API credentials for testing against production server, partic
 1. After creating the client, download the JSON file corresponding to the client setup. You will need this file for later.
 
 ## Datastore backup and recovery
+
+> Note: This section is deprecated as TEAMMATES will soon cease the usage of Datastore.
 
 Google Cloud Datastore provides [managed export/import](https://cloud.google.com/datastore/docs/export-import-entities) as a means of backup and recovery.
 
