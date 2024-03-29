@@ -71,7 +71,7 @@ Note: This document does not have preference over either GAE standard or flexibl
      ./gradlew appengineDeployAll -Pflex
      ```
    * Wait until you see all the following messages or similar on the console:
-     * `Deployed service [default] to [https://8-0-0-dot-teammates-john.appspot.com]`
+     * `Deployed service [default] to [https://9-0-0-dot-teammates-john.appspot.com]`
      * `Cron jobs have been updated.`
      * `Indexes are being rebuilt. This may take a moment.`
      * `Task queues have been updated.`
@@ -86,7 +86,7 @@ Note: This document does not have preference over either GAE standard or flexibl
    * Click `Versions` on the left bar.
    * Tick the checkbox next to the deployed version and select `Migrate Traffic`. Wait for a few minutes.
    * If you do not wish to set the deployed version as the default, you can access the deployed app using
-     `https://{version}-dot-teammates-john.appspot.com`, e.g `https://8-0-0-dot-teammates-john.appspot.com`.
+     `https://{version}-dot-teammates-john.appspot.com`, e.g `https://9-0-0-dot-teammates-john.appspot.com`.
 
 ## Setting up Authentication
 
@@ -100,7 +100,7 @@ Two forms of authentication are supported: Google OAuth 2.0 and Firebase. You ar
 1. Under `Authorised redirect URIs`, add the following URLs:
    * Your app URL + `/oauth2callback?ngsw-bypass=true`, e.g. `https://teammates-john.appspot.com/oauth2callback?ngsw-bypass=true`.
    * If you want to test this in your dev server, you also need to add `http://localhost:8080/oauth2callback?ngsw-bypass=true`.
-   * Note that the redirect URIs are exact and only work for the URIs specified, without wildcards, version number specifier, etc. If you want to allow redirect for specific version (e.g. `https://8-0-0-dot-teammates-john.appspot.com`), you need to add the entry `https://8-0-0-dot-teammates-john.appspot.com/oauth2callback?ngsw-bypass=true` to the list of URIs.
+   * Note that the redirect URIs are exact and only work for the URIs specified, without wildcards, version number specifier, etc. If you want to allow redirect for specific version (e.g. `https://9-0-0-dot-teammates-john.appspot.com`), you need to add the entry `https://9-0-0-dot-teammates-john.appspot.com/oauth2callback?ngsw-bypass=true` to the list of URIs.
 1. Click `Create`. You will be shown the client ID and client secret; save both information for later.
 1. In `build.properties`, set the value of `app.oauth2.client.id` and `app.oauth2.client.secret` with the values from the previous step, and ensure that the value of `app.auth.type` is `googleoauth2`.
 

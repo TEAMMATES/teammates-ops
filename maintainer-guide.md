@@ -106,7 +106,7 @@ New releases are made every set period of time (typically every week), in which 
   * Update the "about page" with the names of new contributors, if any.
 * Release day:
   * Ensure all PRs included in the release are tagged with the correct milestone, correct assignee(s), and appropriate `c.*` label.
-  * Merge `release` branch with `master` branch and tag the release with format `V{major}.{minor}.0` (e.g. `V8.0.0`).
+  * Merge `release` branch with `master` branch and tag the release with format `V{major}.{minor}.0` (e.g. `V9.0.0`).
   * Close the current milestone and create a new milestone for the next + 1 release.
   * Announce the release via GitHub release feature as well as the release issue in the issue tracker. Be sure to credit all who contributed to the release in one way or another.
   * Assign PM to the "Release" issue.
