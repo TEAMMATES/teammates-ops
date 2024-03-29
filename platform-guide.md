@@ -7,8 +7,8 @@ This document details the operations where Google Cloud Platform (GCP) is involv
   * [Setting up OAuth 2.0 client](#setting-up-oauth-20-client)
   * [Setting up Firebase Authentication](#setting-up-firebase-authentication)
 * [Setting up Google Cloud SQL](#setting-up-google-cloud-sql)
-* [Setting up Google VPC](#setting-up-google-vpc)
-* [Setting up Solr](#setting-up-solr)
+* [Setting up Solr in Google Compute Engine](#setting-up-solr-in-google-compute-engine)
+* [Setting up Google Cloud VPC Connector](#setting-up-google-cloud-vpc-connector)
 * [Running client scripts](#running-client-scripts)
 * [Setting up Gmail API credentials](#setting-up-gmail-api-credentials)
 * [Datastore backup and recovery](#datastore-backup-and-recovery)
@@ -23,33 +23,32 @@ Note: This document does not have preference over either GAE standard or flexibl
 
 1. The deployment uses [Google Cloud SDK](https://cloud.google.com/sdk/docs/install), which requires Python 3 (recommended) or Python 2.7. Install it if you have not done so.
 
-1. Create your own project on GCP.<br>
+1. (first-time only) Create your own project on GCP.<br>
    This instruction will use `teammates-john` as the project identifier.<br>
    The eventual URL of the app will be like this: `https://teammates-john.appspot.com`.
 
-1. Enable the following APIs in your project:
+1. (first-time only) Enable the following APIs in your project:
    - [Cloud Tasks API](https://console.cloud.google.com/apis/library/cloudtasks.googleapis.com)
    - [Cloud Scheduler API](https://console.cloud.google.com/apis/library/cloudscheduler.googleapis.com)
 
-1. Create the [SQL instance on GCP](#setting-up-google-cloud-sql), and enable `Private IP`.
+1. (first-time only) Set up the following as needed:
+   - [Authentication provider: either Google OAuth 2.0 or Firebase](#setting-up-authentication)
+   - [PostgreSQL in Google Cloud SQL](#setting-up-google-cloud-sql)
+   - [Solr in Google Compute Engine](#setting-up-solr-in-google-compute-engine)
 
-1. [Authorize your Google account to be used by the Google Cloud SDK](https://cloud.google.com/sdk/docs/authorizing) if you have not done so.
+1. (first-time only) [Authorize your Google account to be used by the Google Cloud SDK](https://cloud.google.com/sdk/docs/authorizing) if you have not done so.
    ```sh
    gcloud auth login
    ```
    Follow the steps until you see `You are now logged in as [...]` on the console.
 
 1. Modify configuration files.
-   1. `src/main/resources/build.properties`<br>
-   Edit the file as instructed in its comments. In particular:
-      * Modify the app ID field to match the ID of your own project 
-      * Modify the Postgres Host (`Private IP`) and Password
-      * Modify if necessary, [OAuth 2.0 client ID used for authentication](#setting-up-oauth-20-client).
-   1. `src/main/appengine/app.yaml`<br>
-      * Modify the `vpc_access_connector` field to specify your project's VPC connector.
-      * Modify if necessary, e.g. to change App Engine instance type (standard env), to set static resources cache expiration time (standard env), to set required CPU/memory resources (flexible env), to configure liveness check (flexible env), or to set automatic scaling policies.
-   1. `src/web/environments/config.ts`<br>
-      * Modify if necessary, e.g. to change the version number displayed to user. Note that this modification needs to be done before building the front-end files.
+   * `src/main/resources/build.properties`<br>
+     Edit the file as instructed in its comments. In particular, modify the app ID field to match the ID of your own project.
+   * `src/main/appengine/app.yaml`<br>
+     Modify if necessary, e.g. to change App Engine instance type (standard env), to set static resources cache expiration time (standard env), to set required CPU/memory resources (flexible env), to configure liveness check (flexible env), or to set automatic scaling policies.
+   * `src/web/environments/config.ts`<br>
+     Modify if necessary, e.g. to change the version number displayed to user. Note that this modification needs to be done before building the front-end files.
 
 1. Ensure that the front-end files have been built.
    * You can refer to the TEAMMATES [developer documentation](https://teammates.github.io/teammates/development.html#building-front-end-files) on building front-end files.
@@ -62,7 +61,7 @@ Note: This document does not have preference over either GAE standard or flexibl
    * Run the following command:
 
      ```sh
-     # Creates the application on GCP
+     # First-time only: creates the application on GCP
      gcloud app create
 
      # Deploy to standard env
@@ -103,7 +102,7 @@ Two forms of authentication are supported: Google OAuth 2.0 and Firebase. You ar
    * If you want to test this in your dev server, you also need to add `http://localhost:8080/oauth2callback?ngsw-bypass=true`.
    * Note that the redirect URIs are exact and only work for the URIs specified, without wildcards, version number specifier, etc. If you want to allow redirect for specific version (e.g. `https://8-0-0-dot-teammates-john.appspot.com`), you need to add the entry `https://8-0-0-dot-teammates-john.appspot.com/oauth2callback?ngsw-bypass=true` to the list of URIs.
 1. Click `Create`. You will be shown the client ID and client secret; save both information for later.
-
+1. In `build.properties`, set the value of `app.oauth2.client.id` and `app.oauth2.client.secret` with the values from the previous step, and ensure that the value of `app.auth.type` is `googleoauth2`.
 
 ### Setting up Firebase Authentication
 
@@ -134,6 +133,7 @@ Two forms of authentication are supported: Google OAuth 2.0 and Firebase. You ar
 1. Set up Firebase Service Account:
    1. In `Project settings`, under the `Service accounts` tab, click `Generate new private key`.
    1. Copy the generated file to `src/main/resources/firebase-credentials.json` in TEAMMATES.
+1. In `build.properties`, set the value of `app.auth.type` to `firebase`.
 
 ## Setting up Google Cloud SQL
 
@@ -159,7 +159,7 @@ To connect the SQL instance with the staging or production environment, we will 
    1. Enable the `Serverless VPC Access API`
    1. Under `Allocate an IP range`, click `Use an automatically allocated IP range`.
    1. Click `Continue` and `Create Connection`
-1. Continue to connect the staging or production environment to the VPC in the [setting up Google VPC section](#setting-up-google-vpc)
+1. Continue to connect the staging or production environment to the VPC in the [VPC section](#setting-up-google-cloud-vpc-connector)
 
 (Optional) To connect your favorite database tool to query the staging environment's SQL database:
 
@@ -197,29 +197,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE O
 SELECT * from information_schema.role_table_grants where grantee='production_user';
 ```
 
-## Setting up Google VPC Connector
-
-[Serverless VPC access](https://cloud.google.com/vpc/docs/serverless-vpc-access) allows our different services to communicate via internal private IP address, instead of public IP addressing. By default, you should already have a VPC network created called (default).
-
-Serverless VPC access requires connectors to be created and configured:
-
-1. Enable [Serverless VPC Access API](https://console.cloud.google.com/marketplace/product/google/vpcaccess.googleapis.com) for your project.
-1. Go to <https://console.cloud.google.com/networking/connectors/list> and select `Create Connector`.
-1. Create a connector with the following configuration:
-   - Name: any name of your choice
-   - Region: the region of your GAE application
-   - Network: `default` (this should be the default created VPC created automatically)
-   - Subnet: `Custom IP range`
-   - IP range: `10.8.0.0`
-   - All other settings can be modified as necessary.
-1. In `app.yaml`, add the following lines:
-   ```yml
-   vpc_access_connector:
-     name: projects/{projectId}/locations/{projectRegion}/connectors/{name}
-   ```
-1. If needed, re-deploy the application after the above change.
-
-## Setting up Solr
+## Setting up Solr in Google Compute Engine
 
 We are using [Apache Solr](https://solr.apache.org/) to support full-text searches, such as looking up for students/instructors by name or by course.
 
@@ -255,7 +233,29 @@ After the above operation, you will have a running VM with a Solr instance runni
 
 Note: If you are deploying to GAE flexible environment, this step is not required and can be skipped.
 
-To fix that, you need to build a VPC connector. The steps to create the VPC connector can be found at the [VPC section](#setting-up-google-vpc)
+To fix that, you need to build a VPC connector. The steps to create the VPC connector can be found at the [VPC section](#setting-up-google-cloud-vpc-connector).
+
+## Setting up Google Cloud VPC Connector
+
+[Serverless VPC access](https://cloud.google.com/vpc/docs/serverless-vpc-access) allows our different services to communicate via internal private IP address, instead of public IP address. By default, you should already have a VPC network created called `default`.
+
+Serverless VPC access requires connectors to be created and configured:
+
+1. Enable [Serverless VPC Access API](https://console.cloud.google.com/marketplace/product/google/vpcaccess.googleapis.com) for your project.
+1. Go to <https://console.cloud.google.com/networking/connectors/list> and select `Create Connector`.
+1. Create a connector with the following configuration:
+   - Name: any name of your choice
+   - Region: the region of your GAE application
+   - Network: `default` (i.e. the automatically created VPC network)
+   - Subnet: `Custom IP range`
+   - IP range: `10.8.0.0`
+   - All other settings can be modified as necessary.
+1. In `app.yaml`, add the following lines:
+   ```yml
+   vpc_access_connector:
+     name: projects/{projectId}/locations/{projectRegion}/connectors/{name}
+   ```
+1. If needed, re-deploy the application after the above change. It should now be able to connect to the VMs within the region.
 
 ## Running client scripts
 
