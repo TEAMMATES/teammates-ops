@@ -164,6 +164,8 @@ To connect the SQL instance with the staging or production environment, we will 
 
 (Optional) To connect your favorite database tool to query the staging environment's SQL database:
 
+Do note that certain educational institute networks may block connections with GCP. If blocked, do try again with an alternate Wifi connection.
+
 1. Select your instance, and click `Connections` on the left-side bar.
 1. Click the `Networking` tab, and make sure `Public IP` is enabled. 
 1. Add your own public IP under `Authorized networks` to whitelist your IP.
