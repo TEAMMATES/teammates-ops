@@ -152,6 +152,18 @@ Security vulnerabilities, once reported and confirmed, should be treated as a ca
 Since the detail of such vulnerability cannot be disclosed until it is fixed, an issue can be created just before a PR for the fix is submitted, with minimal information (e.g. simply "Security vulnerability" as an issue with no further description).
 The complete details can be filled in just before merging and/or after the fix is deployed.
 
+### Schema migration
+Schema migration is necessary when tables/ columns have to be added 
+
+**Role: RL**
+* Consolidate all changelogs in the current release folder in `src/main/resources/db/changelog` into a single changelog to put into `src/main/resources/db/changelog`
+* Follow dev guide on targeting changelog created and run `./gradlew liquibaseTag -PliquibaseCommandValue=<release-num>` to tag changelog to current release
+* Create new folder in `src/main/resources/db/changelog` with the next version as file name
+
+**Role: PM**
+* In `gradle.properties` amend the fields `liquibaseDbUrl`,  `liquibaseUsername` and `liquibasePassword` to match the IP and the username and password for the role used to login to the Cloud SQL
+* Run `./gradlew liquibaseTag -PliquibaseCommandValue=<release-num>`
+
 ### Data migration
 
 Data migration is necessary when changes that are incompatible with the prevailing data storage schema (afterwards "breaking changes") are introduced.
