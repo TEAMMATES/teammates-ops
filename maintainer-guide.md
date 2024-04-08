@@ -157,13 +157,13 @@ Schema migration is necessary when tables/ columns are amended/ added. Refer to 
 
 **Role: RL**
 * Follow dev guide to create new changelog with name `db.changelog-<release_number>.xml`. The previous release is the base and the new release is the target branch.
-* Ensure new changelog is in `src/main/resources/db/changelog` and add it as the last entry in `src/main/resources/db/changelog/db.changelog-root.xml`
-* Follow dev guide on targeting changelog created and run `./gradlew liquibaseTag -PliquibaseCommandValue=<release-num>` to tag changelog to current release
+* Manually add a new changeset to the bottom of changelog file, to tag the database (Refer to [official liquibase documentation](https://docs.liquibase.com/change-types/tag-database.html)).
+* Ensure new changelog is in `src/main/resources/db/changelog` and add it as the last entry in `src/main/resources/db/changelog/db.changelog-root.xml` (note changelogs are executed alphanumerically - careful if adding suffixes)
 * Notify PM of schema change for them to run on production database.
 
 **Role: PM**
 * In `gradle.properties` amend the fields `liquibaseDbUrl`,  `liquibaseUsername` and `liquibasePassword` to match the IP and the username and password for the role used to login into Cloud SQL
-* Run `./gradlew liquibaseUpdateToTagSql -PliquibaseCommandValue=<release-num>`
+* Run `./gradlew liquibaseUpdateToTag -PliquibaseCommandValue="<release-num>"`
 
 ### Data migration
 
