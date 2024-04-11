@@ -156,6 +156,7 @@ The complete details can be filled in just before merging and/or after the fix i
 Schema migration is necessary when tables/ columns are amended/ added. Refer to TEAMMATES repo [docs/schema-migration.md](https://github.com/TEAMMATES/teammates/tree/master/docs/schema-migration.md)
 
 **Role: RL**
+Note on release number: Since Liquibase runs changelogs in alphanumeric order e.g `db.changelog-v9.0.0.beta.2.xml` will run after `db.changelog-v9.0.0.beta.11.xml`
 * Follow dev guide to create new changelog with name `db.changelog-<release_number>.xml`. The previous release is the base and the new release is the target branch.
 * Manually add a new changeset to the bottom of changelog file, to tag the database (Refer to [official liquibase documentation](https://docs.liquibase.com/change-types/tag-database.html)).
 * Ensure new changelog is in `src/main/resources/db/changelog` and add it as the last entry in `src/main/resources/db/changelog/db.changelog-root.xml` (note changelogs are executed alphanumerically - careful if adding suffixes)
