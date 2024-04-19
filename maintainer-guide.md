@@ -120,25 +120,12 @@ New releases are made every set period of time (typically every week), in which 
 
 **Role: PM**
 
-Release without schema change:
-
 1. Pull the latest `release` branch.
-2. Deploy to the live server.
-3. Get live green, or otherwise all test failures need to be accounted for.
-4. Make the version default.
-5. Close the "Release" issue.
-
-Release with schema change:
-
-1. Pull the latest `release` branch.
-2. Take system to maintenance mode.
-3. Follow the steps for PM in [Schema Migration](#schema-migration)
-4. Deploy to the live server.
-5. Get live green, or otherwise all test failures need to be accounted for.
-6. Make the version default.
-6. Turn off system maintenance mode.
-7. Close the "Release" Issue
-
+2. If schema change is needed, follow the steps for PM in [Schema Migration](#schema-migration)
+3. Deploy to the live server.
+4. Get live green, or otherwise all test failures need to be accounted for.
+5. Make the version default.
+6. Close the "Release" issue.
 
 ## Making a hot patch
 
