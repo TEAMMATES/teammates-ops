@@ -104,8 +104,10 @@ New releases are made every set period of time (typically every week), in which 
 * Before release day:
   * [Create an issue for the release](https://github.com/TEAMMATES/teammates/issues/new?template=release.md) to announce the scheduled release time.
   * Update the "about page" with the names of new contributors, if any.
+  * Check if any schema change is needed for this release. If so, inform PM that this release requires maintainance mode and generate Liquibase changelog (refer to [Schema Migration](#schema-migration)).
 * Release day:
   * Ensure all PRs included in the release are tagged with the correct milestone, correct assignee(s), and appropriate `c.*` label.
+  * Ensure all schema change is captured in the Liquibase changelog.
   * Merge `release` branch with `master` branch and tag the release with format `V{major}.{minor}.0` (e.g. `V8.0.0`).
   * Close the current milestone and create a new milestone for the next + 1 release.
   * Announce the release via GitHub release feature as well as the release issue in the issue tracker. Be sure to credit all who contributed to the release in one way or another.
@@ -118,11 +120,25 @@ New releases are made every set period of time (typically every week), in which 
 
 **Role: PM**
 
-* Pull the latest `release` branch.
-* Deploy to the live server.
-* Get live green, or otherwise all test failures need to be accounted for.
-* Make the version default.
-* Close the "Release" issue.
+Release without schema change:
+
+1. Pull the latest `release` branch.
+2. Deploy to the live server.
+3. Get live green, or otherwise all test failures need to be accounted for.
+4. Make the version default.
+5. Close the "Release" issue.
+
+Release with schema change:
+
+1. Pull the latest `release` branch.
+2. Take system to maintenance mode.
+3. Follow the steps for PM in [Schema Migration](#schema-migration)
+4. Deploy to the live server.
+5. Get live green, or otherwise all test failures need to be accounted for.
+6. Make the version default.
+6. Turn off system maintenance mode.
+7. Close the "Release" Issue
+
 
 ## Making a hot patch
 
@@ -163,7 +179,7 @@ Note on release number: Since Liquibase runs changelogs in alphanumeric order e.
 * Notify PM of schema change for them to run on production database.
 
 **Role: PM**
-* In `gradle.properties` amend the fields `liquibaseDbUrl`,  `liquibaseUsername` and `liquibasePassword` to match the IP and the username and password for the role used to login into Cloud SQL
+* In `gradle.properties` amend the fields `liquibaseDbUrl`,  `liquibaseUsername` and `liquibasePassword` to match the IP and the username and password for the role (i.e. super user) used to run command on Cloud SQL
 * Run `./gradlew liquibaseUpdateToTag -PliquibaseCommandValue="<release-num>"`
 
 ### Data migration
