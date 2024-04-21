@@ -104,7 +104,8 @@ New releases are made every set period of time (typically every week), in which 
 * Before release day:
   * [Create an issue for the release](https://github.com/TEAMMATES/teammates/issues/new?template=release.md) to announce the scheduled release time.
   * Update the "about page" with the names of new contributors, if any.
-  * Check if any schema change is needed for this release. If so, inform PM that this release requires maintainance mode and generate Liquibase changelog (refer to [Schema Migration](#schema-migration)).
+  * Check if any schema change is needed for this release. If so, generate Liquibase changelog (refer to [Schema Migration](#schema-migration)) and inform PM that this release requires maintainance mode.
+
 * Release day:
   * Ensure all PRs included in the release are tagged with the correct milestone, correct assignee(s), and appropriate `c.*` label.
   * Ensure all schema change is captured in the Liquibase changelog.
@@ -156,18 +157,25 @@ Since the detail of such vulnerability cannot be disclosed until it is fixed, an
 The complete details can be filled in just before merging and/or after the fix is deployed.
 
 ### Schema migration
-Schema migration is necessary when tables/ columns are amended/ added. Refer to TEAMMATES repo [docs/schema-migration.md](https://github.com/TEAMMATES/teammates/tree/master/docs/schema-migration.md)
+Schema migration is necessary when tables / columns are amended/ added. Refer to TEAMMATES repo [docs/schema-migration.md](https://github.com/TEAMMATES/teammates/tree/master/docs/schema-migration.md)
 
 **Role: RL**
-Note on release number: Since Liquibase runs changelogs in the order included in the `db.changelog-root.xml` irrespective of lexicographical order, so include the newest changelog at the bottom of the file 
-* Follow dev guide to create new changelog with name `db.changelog-<release_number>.xml`. The previous release is the base and the new release is the target branch.
-* Manually add a new changeset to the bottom of changelog file, to tag the database (Refer to [official liquibase documentation](https://docs.liquibase.com/change-types/tag-database.html)).
-* Ensure new changelog is in `src/main/resources/db/changelog` and add it as the last entry in `src/main/resources/db/changelog/db.changelog-root.xml`
-* Notify PM of schema change for them to run on production database.
+
+Note on release number: Since Liquibase runs changelogs in the order included in the `db.changelog-root.xml` irrespective of lexicographical order, so include the newest changelog at the bottom of the file.
+
+Before Release:
+
+1. Follow dev guide to create new changelog with name `db.changelog-<release_number>.xml`. The previous release is the base and the new release is the target branch.
+2. Manually add a new changeset to the bottom of changelog file, to tag the database (Refer to [official liquibase documentation](https://docs.liquibase.com/change-types/tag-database.html)).
+3. Ensure new changelog is in `src/main/resources/db/changelog` and add it as the last entry in `src/main/resources/db/changelog/db.changelog-root.xml`
+4. Notify PM of schema change for them to run on production database.
 
 **Role: PM**
-* In `gradle.properties` amend the fields `liquibaseDbUrl`,  `liquibaseUsername` and `liquibasePassword` to match the IP and the username and password for the role (i.e. super user) used to run command on Cloud SQL
-* Run `./gradlew liquibaseUpdateToTag -PliquibaseCommandValue="<release-num>"`
+1. In `gradle.properties` amend the fields `liquibaseDbUrl`,  `liquibaseUsername` and `liquibasePassword` to match the IP and the username and password for the role (i.e. super user) used to run command on Cloud SQL
+2. Run `./gradlew liquibaseUpdateToTag -PliquibaseCommandValue="<release-num>"`
+3. To double check that database has updated to the tag, use database query tool (e.g. DBeaver) to check the latest entry of table `DATABASECHANGELOG`, which should be about adding the new tag `<release-num>`.
+
+Refer to TEAMMATES repo `src/main/resources/db/changelog/db.changelog-<release-num>.xml` for the exact schema changes.
 
 ### Data migration
 
